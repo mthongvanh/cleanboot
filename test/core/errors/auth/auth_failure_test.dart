@@ -1,4 +1,4 @@
-import 'package:clean_bootstrap/core/errors/auth/auth_failure.dart';
+import 'package:cleanboot/core/errors/auth/auth_failure.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

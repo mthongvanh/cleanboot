@@ -1,4 +1,4 @@
-import 'package:clean_bootstrap/core/errors/failures.dart';
+import 'package:cleanboot/core/errors/failures.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class TestFailure extends Failure {

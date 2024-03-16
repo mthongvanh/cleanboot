@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PROJECT_DIR="/Users/michael/Development/Projects/clean_bootstrap"
+PROJECT_DIR="/Users/michael/Development/Projects/cleanboot"
 MOD="lib/modules"
 FEATURE_NAME="home"
 

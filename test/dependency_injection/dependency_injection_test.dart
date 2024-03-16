@@ -1,6 +1,6 @@
 // ignore_for_file: unreachable_from_main
 
-import 'package:clean_bootstrap/dependency_injection/domain/service_locator.dart';
+import 'package:cleanboot/dependency_injection/domain/service_locator.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 

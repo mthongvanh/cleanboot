@@ -1,4 +1,4 @@
-import 'package:clean_bootstrap/modules/auth/domain/params/auth_params.dart';
+import 'package:cleanboot/modules/auth/domain/params/auth_params.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

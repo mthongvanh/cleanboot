@@ -1,7 +1,7 @@
-import 'package:clean_bootstrap/core/errors/auth/auth_failure.dart';
-import 'package:clean_bootstrap/core/errors/failures.dart';
-import 'package:clean_bootstrap/core/use_cases/use_case.dart';
-import 'package:clean_bootstrap/modules/auth/domain/entities/auth_result.dart';
+import 'package:cleanboot/core/errors/auth/auth_failure.dart';
+import 'package:cleanboot/core/errors/failures.dart';
+import 'package:cleanboot/core/use_cases/use_case.dart';
+import 'package:cleanboot/modules/auth/domain/entities/auth_result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class UseCaseImpl implements UseCase<AuthResult, NoParams> {

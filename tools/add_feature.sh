@@ -4,7 +4,7 @@
 #   folder setup and file creation
 ###
 
-PROJECT_DIR="/Users/michael/Development/Projects/clean_bootstrap"
+PROJECT_DIR="/Users/michael/Development/Projects/cleanboot"
 MOD="lib/modules"
 TEST="test/modules"
 FEATURE_NAME="authentication"
