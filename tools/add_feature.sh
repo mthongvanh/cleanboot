@@ -4,10 +4,10 @@
 #   folder setup and file creation
 ###
 
-PROJECT_DIR="/Users/michael/Development/Projects/cleanboot"
+PROJECT_DIR="/Users/michael/Development/Projects/housepaintz/"
 MOD="lib/src/features"
 TEST="test/features"
-FEATURE_NAME="app_init"
+FEATURE_NAME="home"
 
 mkdir $PROJECT_DIR/$MOD/$FEATURE_NAME
 mkdir $PROJECT_DIR/$TEST
