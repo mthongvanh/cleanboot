@@ -12,6 +12,7 @@ dependencies:
 
   equatable: ^2.0.5
 
+  flutter_animate: ^4.5.0
   flutter_secure_storage: ^9.0.0
   freezed: ^2.4.7
 
@@ -19,6 +20,8 @@ dependencies:
   go_router: ^13.2.0
 
   http: ^1.2.1
+
+  lottie: ^3.1.0
 
 dev_dependencies:
   flutter_test:

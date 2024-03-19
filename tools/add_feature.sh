@@ -5,11 +5,12 @@
 ###
 
 PROJECT_DIR="/Users/michael/Development/Projects/cleanboot"
-MOD="lib/modules"
-TEST="test/modules"
-FEATURE_NAME="authentication"
+MOD="lib/src/features"
+TEST="test/features"
+FEATURE_NAME="app_init"
 
 mkdir $PROJECT_DIR/$MOD/$FEATURE_NAME
+mkdir $PROJECT_DIR/$TEST
 mkdir $PROJECT_DIR/$TEST/$FEATURE_NAME
 
 ## data section
