@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
 
+export 'auth/auth_failure.dart';
+export 'l10n/locale_load_failure.dart';
+
 /// {@template Failure}
 /// Base class to describe failed operations
 /// {@endtemplate}

@@ -1,20 +1,21 @@
 import 'package:get_it/get_it.dart';
 
+import '../dependency_injection.dart';
 import '../domain/service_locator.dart';
 
 /// {@template AppServiceLocator}
 /// Registers dependencies with a service locator
 /// {@endtemplate}
-class AppServiceLocator extends ServiceLocator {
+abstract class AppServiceLocator extends ServiceLocator {
   /// Service locator that provides dependencies to the application
-  GetIt get _getIt => GetIt.instance;
+  final GetIt _getIt = GetIt.asNewInstance();
 
   /// {@macro AppServiceLocator}
-  AppServiceLocator(
-      // this.dependencies,
+  AppServiceLocator(// this.dependencies,
       );
 
   /// setup application dependencies in the service locator
+  @override
   Future<void> init() async {
     ///TODO: add app dependencies here
   }
@@ -42,6 +43,17 @@ class AppServiceLocator extends ServiceLocator {
   }) {
     _getIt.registerSingleton<T>(
       instance,
+      instanceName: identifier,
+    );
+  }
+
+  @override
+  void registerLazySingleton<T extends Object>(
+    final T Function() creator, {
+    final String? identifier,
+  }) {
+    _getIt.registerLazySingleton<T>(
+      creator,
       instanceName: identifier,
     );
   }

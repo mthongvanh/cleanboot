@@ -5,7 +5,7 @@ import '../errors/failures.dart';
 /// Action executed in the application
 abstract class UseCase<Type, Params> {
   /// Execute the use case
-  Future<(Failure?, Type?)> execute(final Params params);
+  Future<({Failure? failure, Type? result})> execute(final Params params);
 }
 
 /// Empty parameters
