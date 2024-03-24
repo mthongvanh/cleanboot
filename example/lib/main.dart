@@ -1,10 +1,6 @@
+import 'package:cleanboot/cleanboot.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'dependency_injection/dependency_injection.dart';
-import 'modules/home/presentation/pages/home_page.dart';
-import 'modules/launch/presentation/pages/launch_page.dart';
-import 'routing/app_router.dart';
 
 void main() async {
   final AppRouter appRouter = AppRouter(
@@ -15,7 +11,7 @@ void main() async {
   );
 
   // DI
-  final _ = await configureServices();
+  // final _ = await configureServices();
 
   runApp(
     MainApp(
@@ -45,7 +41,6 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return MaterialApp.router(
-      routerConfig: appRouter.router(),
       title: title,
     );
   }
@@ -61,11 +56,15 @@ class Pages extends RouteProvider {
 
   GoRoute _homeRoute() => GoRoute(
         path: '/',
-        builder: (final context, final state) => const HomePage(),
+        builder: (final context, final state) => const Placeholder(
+          child: Text('Home'),
+        ),
       );
 
   GoRoute _launchRoute() => GoRoute(
         path: '/launch',
-        builder: (final context, final state) => const LaunchPage(),
+        builder: (final context, final state) => const Placeholder(
+          child: Text('Launch'),
+        ),
       );
 }
