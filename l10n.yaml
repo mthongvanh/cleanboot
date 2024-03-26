@@ -1,3 +1,3 @@
-arb-dir: lib/l10n/arb
+arb-dir: lib/modules/l10n/data/arb
 template-arb-file: base_en.arb
 output-localization-file: base_localizations.dart
