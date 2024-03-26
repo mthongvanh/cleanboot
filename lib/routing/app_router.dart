@@ -15,6 +15,36 @@ abstract class AppRouter {
 
   /// Provide route-able widgets
   final List<RouteProvider> routeProviders;
+
+  /// Navigate to a route
+  void go(
+    final BuildContext context, {
+    required final String routePath,
+    final Map<String, Object>? routeParameters,
+  }) =>
+      throw UnimplementedError(
+        'routers must implement the go function',
+      );
+
+  /// Navigate to a route
+  void goNamed(
+    final BuildContext context, {
+    required final String routeName,
+    final Map<String, Object>? routeParameters,
+  }) =>
+      throw UnimplementedError(
+        'routers must implement the goNamed function',
+      );
+
+  /// Push a new route on top of the stack
+  Future<T?> push<T>(
+    final BuildContext context, {
+    required final String routeIdentifier,
+    final Map<String, Object>? routeParameters,
+  }) =>
+      throw UnimplementedError(
+        'routers must implement the push function',
+      );
 }
 
 /// Provides widgets to which an application can navigate

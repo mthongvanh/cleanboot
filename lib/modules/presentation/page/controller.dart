@@ -11,9 +11,11 @@ abstract class Controller<T extends Widget> {
 
   /// [AppRouter] that performs navigation and provides information about the
   /// navigation stack
-  AppRouter get appRouter => throw UnimplementedError(
-        'Controllers must provide an app router for navigation',
-      );
+  final AppRouter navigator;
+
+  /// Controls values in a [ViewModel] that is associated to a [Widget]
+  Controller(this.navigator);
+
 
   /// Notifies widgets that values on the view model have been updated
   void notify() => viewModel.update();
