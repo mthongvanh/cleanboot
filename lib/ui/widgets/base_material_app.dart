@@ -37,7 +37,7 @@ class BaseMaterialApp extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return MaterialApp.router(
-      routerConfig: appRouter.router(),
+      routerConfig: appRouter.routerConfig(),
       title: title,
       // debugShowCheckedModeBanner: false,
       theme: appTheme.light(),

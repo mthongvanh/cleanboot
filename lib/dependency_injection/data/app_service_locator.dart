@@ -11,8 +11,7 @@ abstract class AppServiceLocator extends ServiceLocator {
   final GetIt _getIt = GetIt.asNewInstance();
 
   /// {@macro AppServiceLocator}
-  AppServiceLocator(// this.dependencies,
-      );
+  AppServiceLocator();
 
   /// setup application dependencies in the service locator
   @override
@@ -21,8 +20,16 @@ abstract class AppServiceLocator extends ServiceLocator {
   }
 
   @override
-  T get<T extends Object>({final String? identifier}) {
-    return _getIt.get<T>(instanceName: identifier);
+  T get<T extends Object>({
+    final String? identifier,
+    final Object? param1,
+    final Object? param2,
+  }) {
+    return _getIt.get<T>(
+      instanceName: identifier,
+      param1: param1,
+      param2: param2,
+    );
   }
 
   @override
@@ -32,6 +39,17 @@ abstract class AppServiceLocator extends ServiceLocator {
   }) {
     _getIt.registerFactory<T>(
       creator,
+      instanceName: identifier,
+    );
+  }
+
+  @override
+  void registerFactoryParams<T extends Object, Param1, Param2>(
+    final T Function(Param1 param1, Param2 param2) factoryBuilder, {
+    final String? identifier,
+  }) {
+    _getIt.registerFactoryParam<T, Param1, Param2>(
+      factoryBuilder,
       instanceName: identifier,
     );
   }

@@ -14,6 +14,13 @@ abstract class ServiceLocator {
     final String? identifier,
   });
 
+  /// Registers a factory in the service locator that initializes an instance
+  /// with up to two parameters
+  void registerFactoryParams<T extends Object, Param1, Param2>(
+    final T Function(Param1 param1, Param2 param2) factoryBuilder, {
+    final String? identifier,
+  });
+
   /// Registers a singleton in the service locator
   void registerSingleton<T extends Object>(
     final T instance, {
