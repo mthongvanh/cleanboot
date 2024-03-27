@@ -4,6 +4,8 @@ import 'view_model.dart';
 
 /// Controls values in a [ViewModel] that is associated to a [Widget]
 abstract class Controller<T extends Widget> {
+  final _debugKey = UniqueKey();
+
   /// View model associated to a widget
   ViewModel<T> get viewModel => throw UnimplementedError(
         'Controllers must provide a view model',

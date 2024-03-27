@@ -5,6 +5,14 @@ import 'package:go_router/go_router.dart';
 /// Defines routes for the application
 /// {@endtemplate}
 abstract class AppRouter {
+  /// Root navigator state key
+  static GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'root');
+
+  /// Nested navigator state key
+  static GlobalKey<NavigatorState> shellNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'shell');
+
   /// {@macro AppRouter}
   AppRouter({
     required this.routeProviders,
@@ -51,4 +59,7 @@ abstract class AppRouter {
 abstract class RouteProvider {
   /// Widgets to which an application can navigate
   List<GoRoute> routes();
+
+  /// Stateful navigators used by navigation components
+  List<StatefulShellBranch> branches();
 }

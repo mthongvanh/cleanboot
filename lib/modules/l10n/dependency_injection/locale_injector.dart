@@ -5,13 +5,16 @@ import '../data/repositories/locale_repository_impl.dart';
 /// localization-related classes
 class LocaleInjector {
   /// Configure localization dependencies
-  static void configureDependencies(final ServiceLocator sl) {
+  static Future<void> configureDependencies(final ServiceLocator sl) async {
     // register repos
     final localeRepo = LocaleRepositoryImpl();
-    sl..registerSingleton<LocaleRepository>(localeRepo)
-    // register use cases
-    ..registerSingleton<LoadLocaleUseCase>(
-      LoadLocaleUseCase(localeRepo),
-    );
+    await localeRepo.load();
+
+    sl
+      ..registerSingleton<LocaleRepository>(localeRepo)
+      // register use cases
+      ..registerSingleton<LoadLocaleUseCase>(
+        LoadLocaleUseCase(localeRepo),
+      );
   }
 }

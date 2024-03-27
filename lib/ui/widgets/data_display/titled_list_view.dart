@@ -70,6 +70,9 @@ class TitledListView<T> extends StatelessWidget {
   /// Builds the [ListView] item's content
   final IndexedWidgetBuilder itemBuilder;
 
+  /// Callback performed when a Paintz item is selected from the list
+  final void Function(BuildContext context, int index)? onItemSelected;
+
   /// {@macro TitledListView}
   const TitledListView({
     super.key,
@@ -83,6 +86,7 @@ class TitledListView<T> extends StatelessWidget {
     this.accessoryPressed,
     required this.itemBuilder,
     required this.items,
+    this.onItemSelected,
   });
 
   @override
@@ -156,31 +160,31 @@ class TitledListView<T> extends StatelessWidget {
   }
 
   Widget _buildAccessoryButton(
-      final BuildContext context, {
-        final String? accessoryText,
-        final TextStyle? accessoryTextStyle,
-        final VoidCallback? onPressed,
-      }) {
+    final BuildContext context, {
+    final String? accessoryText,
+    final TextStyle? accessoryTextStyle,
+    final VoidCallback? onPressed,
+  }) {
     return (accessoryText?.isNotEmpty ?? false)
         ? TextButton(
-      onPressed: onPressed,
-      child: Text(
-        accessoryText!,
-        style: accessoryTextStyle,
-      ),
-    )
+            onPressed: onPressed,
+            child: Text(
+              accessoryText!,
+              style: accessoryTextStyle,
+            ),
+          )
         : const SizedBox();
   }
 
   Widget _buildContent(
-      final BuildContext context, {
-        required final IndexedWidgetBuilder builder,
-        final double aspectRatio = 1.0,
-        final EdgeInsets contentListViewPadding = const EdgeInsets.symmetric(
-          horizontal: 16.0,
-        ),
-        final Axis scrollDirection = Axis.horizontal,
-      }) {
+    final BuildContext context, {
+    required final IndexedWidgetBuilder builder,
+    final double aspectRatio = 1.0,
+    final EdgeInsets contentListViewPadding = const EdgeInsets.symmetric(
+      horizontal: 16.0,
+    ),
+    final Axis scrollDirection = Axis.horizontal,
+  }) {
     return LayoutBuilder(
       builder: (final context, final constraints) {
         return AspectRatio(
@@ -189,7 +193,12 @@ class TitledListView<T> extends StatelessWidget {
             itemCount: items.length,
             padding: contentListViewPadding,
             scrollDirection: scrollDirection,
-            itemBuilder: itemBuilder,
+            itemBuilder: (final ctx, final idx) {
+              return GestureDetector(
+                onTap: () => onItemSelected?.call(ctx, idx),
+                child: itemBuilder(ctx, idx),
+              );
+            },
           ),
         );
       },

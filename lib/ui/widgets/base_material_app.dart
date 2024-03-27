@@ -12,8 +12,8 @@ class BaseMaterialApp extends StatelessWidget {
   /// App title
   final String title;
 
-  /// Router
-  final AppRouter appRouter;
+  /// Router config
+  final RouterConfig<Object> routerConfig;
 
   /// Theme
   final MaterialTheme appTheme;
@@ -27,7 +27,7 @@ class BaseMaterialApp extends StatelessWidget {
   /// Creates a [BaseMaterialApp] widget that contains the app
   const BaseMaterialApp({
     required this.title,
-    required this.appRouter,
+    required this.routerConfig,
     required this.appTheme,
     this.localizationDelegates,
     this.locales,
@@ -37,7 +37,7 @@ class BaseMaterialApp extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return MaterialApp.router(
-      routerConfig: appRouter.routerConfig(),
+      routerConfig: routerConfig,
       title: title,
       // debugShowCheckedModeBanner: false,
       theme: appTheme.light(),

@@ -6,15 +6,17 @@ import 'package:intl/intl_standalone.dart';
 
 /// Loads and stores localized strings
 abstract class LocaleRepository {
-  final Locale _defaultLocal = Locale('en');
+  final Locale _defaultLocale = const Locale('en');
 
   AppLocalizations? _strings;
 
   /// Collection of localized strings
   AppLocalizations get strings;
 
+  /// Whether localizations have been loaded
   bool get isLoaded;
 
+  /// Whether the current locale is English
   bool get isEnglish;
 
   /// Loads localized strings
