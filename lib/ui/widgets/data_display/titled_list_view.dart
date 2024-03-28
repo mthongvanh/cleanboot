@@ -73,6 +73,9 @@ class TitledListView<T> extends StatelessWidget {
   /// Callback performed when a Paintz item is selected from the list
   final void Function(BuildContext context, int index)? onItemSelected;
 
+  /// Clip behavior for the [ListView]
+  final Clip? listViewClip;
+
   /// {@macro TitledListView}
   const TitledListView({
     super.key,
@@ -87,6 +90,7 @@ class TitledListView<T> extends StatelessWidget {
     required this.itemBuilder,
     required this.items,
     this.onItemSelected,
+    this.listViewClip,
   });
 
   @override
@@ -190,6 +194,7 @@ class TitledListView<T> extends StatelessWidget {
         return AspectRatio(
           aspectRatio: aspectRatio,
           child: ListView.builder(
+            clipBehavior: listViewClip ?? Clip.hardEdge,
             itemCount: items.length,
             padding: contentListViewPadding,
             scrollDirection: scrollDirection,

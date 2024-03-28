@@ -82,4 +82,15 @@ class _Shadows {
   final textStrong = [
     Shadow(color: Colors.black.withOpacity(.6), offset: Offset(0, 4), blurRadius: 6),
   ];
+
+  /// Default shadow for [PaintzCard] items
+  final cardOffset = [
+    BoxShadow(
+      color: Colors.black.withOpacity(0.75),
+      offset: const Offset(-10, 35),
+      blurRadius: 30.0,
+      spreadRadius: -35.0,
+      blurStyle: BlurStyle.outer,
+    ),
+  ];
 }

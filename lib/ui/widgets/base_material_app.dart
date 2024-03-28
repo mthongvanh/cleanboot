@@ -39,7 +39,7 @@ class BaseMaterialApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: routerConfig,
       title: title,
-      // debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       theme: appTheme.light(),
       darkTheme: appTheme.dark(),
       localizationsDelegates: {
