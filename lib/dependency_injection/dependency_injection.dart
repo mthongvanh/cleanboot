@@ -1,5 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as flutter_dotenv;
+
+import 'domain/firebase_options.dart';
 import 'domain/service_locator.dart';
 
 export 'data/app_service_locator.dart';
@@ -13,6 +19,12 @@ class DependencyInjection {
   ]) async {
     Object? result;
     try {
+      // initialize DotEnv variables
+      await flutter_dotenv.dotenv.load();
+
+      // initialize firebase first to catch any exceptions
+      await _initializeFirebase();
+
       result = Future.forEach(
         locators,
         (final ServiceLocator element) => element.init(),
@@ -23,5 +35,13 @@ class DependencyInjection {
       );
     }
     return result;
+  }
+
+  static Future<void> _initializeFirebase({
+    final FirebaseOptions? options,
+  }) async {
+    await Firebase.initializeApp(
+      options: options ?? DefaultFirebaseOptions.currentPlatform,
+    );
   }
 }
