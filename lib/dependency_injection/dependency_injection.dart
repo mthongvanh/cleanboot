@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as flutter_dotenv;
 
+import '../config/app_config.dart';
 import 'domain/firebase_options.dart';
 import 'domain/service_locator.dart';
 
@@ -14,16 +12,19 @@ export 'domain/service_locator.dart';
 /// Core DI class for initializing service locators
 class DependencyInjection {
   /// Configure the service locator and app dependencies
-  static Future<Object?> bootstrap([
-    final List<ServiceLocator> locators = const <ServiceLocator>[],
-  ]) async {
+  static Future<Object?> bootstrap(
+    final List<ServiceLocator> locators, {
+    required final AppInitConfig config,
+  }) async {
     Object? result;
     try {
       // initialize DotEnv variables
       await flutter_dotenv.dotenv.load();
 
       // initialize firebase first to catch any exceptions
-      await _initializeFirebase();
+      if (config.firebaseEnabled) {
+        await _initializeFirebase();
+      }
 
       result = Future.forEach(
         locators,
