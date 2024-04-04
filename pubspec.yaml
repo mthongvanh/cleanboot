@@ -27,13 +27,19 @@ dependencies:
 
   http: ^1.2.1
 
-  intl:
+  intl: ^0.18.0
+
+  json_annotation: ^4.8.1
+
   lottie: ^3.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+
+  build_runner: ^2.4.9
+  json_serializable: ^6.7.1
   mockito: ^5.4.4
 
 flutter:
