@@ -1,16 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
 
 import '../../../../cleanboot.dart';
-import '../../data/models/authed_user_model.dart';
-import '../../domain/entities/authed_user.dart';
 
 class _AuthedUserModelToEntityMapper
     extends Mapper<AuthedUserModel, AuthedUser> {
-  AuthedUserModel fromFirestore(final UserCredential firestoreCredentials) {
+  AuthedUserModel fromFirestore(final firebase.User user) {
     return AuthedUserModel(
-      identifier: firestoreCredentials.user?.uid,
-      email: firestoreCredentials.user?.email,
-      username: firestoreCredentials.user?.displayName,
+      identifier: user.uid,
+      email: user.email,
+      username: user.displayName,
+      anonymous: user.isAnonymous,
     );
   }
 
@@ -19,6 +18,7 @@ class _AuthedUserModelToEntityMapper
         identifier: entity.identifier,
         email: entity.email,
         username: entity.username,
+        anonymous: entity.anonymous,
       );
 
   @override
@@ -26,6 +26,7 @@ class _AuthedUserModelToEntityMapper
         identifier: model.identifier,
         email: model.email,
         username: model.username,
+        anonymous: model.anonymous,
       );
 }
 
@@ -43,9 +44,9 @@ extension AuthedUserEntityExt on AuthedUser {
 }
 
 /// Maps a [UserCredential] from Firebase to an [AuthedUserModel]
-extension AuthedUserModelFirestoreExt on UserCredential {
+extension AuthedUserModelFirestoreExt on firebase.User {
   /// Maps a [UserCredential] from Firebase to a [AuthedUserModel]
-  AuthedUserModel toModel() {
+  AuthedUserModel get toModel {
     return _AuthedUserModelToEntityMapper().fromFirestore(this);
   }
 }

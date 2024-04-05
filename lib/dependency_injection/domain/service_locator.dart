@@ -8,6 +8,9 @@ abstract class ServiceLocator {
   /// Returns a registered service from the locator
   T get<T extends Object>({final String? identifier});
 
+  /// Query whether a service has been registered
+  bool isRegistered<T extends Object>({final String? identifier});
+
   /// Registers a factory in the service locator
   void registerFactory<T extends Object>(
     final T Function() creator, {

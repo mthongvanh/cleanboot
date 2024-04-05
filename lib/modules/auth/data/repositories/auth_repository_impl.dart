@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import '../../auth.dart';
 import '../../domain/data_sources/auth_remote_data_source.dart';
+import '../../mappers/mappers.dart';
 
 /// {@template AuthRepositoryImpl}
 /// Implements [AuthRepository] base class methods
@@ -21,5 +24,16 @@ class AuthRepositoryImpl extends AuthRepository {
       identifier: authParameters.identifier ?? '',
       password: authParameters.secret ?? '',
     );
+  }
+
+  @override
+  Future<void> signOut() async {
+    await _remoteDataSource.signOut();
+  }
+
+  @override
+  FutureOr<AuthedUser?> currentUser() async {
+    final AuthedUserModel? authed = await _remoteDataSource.currentUser();
+    return authed?.toEntity;
   }
 }

@@ -10,6 +10,7 @@ AuthedUser _$AuthedUserFromJson(Map<String, dynamic> json) => AuthedUser(
       identifier: json['identifier'] as String?,
       email: json['email'] as String?,
       username: json['username'] as String?,
+      anonymous: json['anonymous'] as bool,
     );
 
 Map<String, dynamic> _$AuthedUserToJson(AuthedUser instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$AuthedUserToJson(AuthedUser instance) =>
       'identifier': instance.identifier,
       'email': instance.email,
       'username': instance.username,
+      'anonymous': instance.anonymous,
     };

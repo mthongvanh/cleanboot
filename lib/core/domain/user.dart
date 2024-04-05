@@ -23,11 +23,17 @@ class User extends Equatable {
   /// {@endtemplate}
   final String? username;
 
+  /// {@template User.anonymous}
+  /// Whether a user has signed-up or not (e.g. has email or username associated)
+  /// {@endtemplate}
+  final bool anonymous;
+
   /// {@macro User}
   const User({
     required this.identifier,
     required this.email,
     required this.username,
+    required this.anonymous,
   });
 
 

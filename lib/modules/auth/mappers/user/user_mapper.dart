@@ -3,17 +3,19 @@ import '../../../../cleanboot.dart';
 class _UserModelToEntityMapper extends Mapper<UserModel, User> {
   @override
   UserModel fromEntity(final User entity) => UserModel(
-    identifier: entity.identifier,
-    email: entity.email,
-    username: entity.username,
-  );
+        identifier: entity.identifier,
+        email: entity.email,
+        username: entity.username,
+        anonymous: entity.anonymous,
+      );
 
   @override
   User toEntity(final UserModel model) => User(
-    identifier: model.identifier,
-    email: model.email,
-    username: model.username,
-  );
+        identifier: model.identifier,
+        email: model.email,
+        username: model.username,
+        anonymous: model.anonymous,
+      );
 }
 
 /// Maps a [UserModel] to a [User] entity

@@ -17,6 +17,7 @@ class AuthedUser extends User {
     required super.identifier,
     required super.email,
     required super.username,
+    required super.anonymous,
   });
 
 
@@ -34,5 +35,6 @@ class AuthedUser extends User {
     identifier,
     email,
     username,
+    anonymous,
   ];
 }

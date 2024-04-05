@@ -15,11 +15,16 @@ class UserModel extends Equatable {
   /// {@macro User.username}
   final String? username;
 
+  /// {@macro User.anonymous}
+  final bool anonymous;
+
+
   /// {@macro User}
   const UserModel({
     required this.identifier,
     required this.email,
     required this.username,
+    required this.anonymous,
   });
 
 
@@ -36,5 +41,6 @@ class UserModel extends Equatable {
     identifier,
     email,
     username,
+    anonymous,
   ];
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../auth.dart';
 
 /// Base class for implementing authentication
@@ -11,4 +13,10 @@ abstract class AuthRepository {
   Future<AuthResultModel> signUp(
     final AuthParams authParameters,
   );
+
+  /// Currently authenticated user
+  FutureOr<AuthedUser?> currentUser();
+
+  /// Sign-out of a service
+  Future<void> signOut();
 }

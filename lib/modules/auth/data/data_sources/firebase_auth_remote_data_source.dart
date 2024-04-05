@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../auth.dart';
 import '../../domain/data_sources/auth_remote_data_source.dart';
-import '../../mappers/user/authed_user_mapper.dart';
+import '../../mappers/mappers.dart';
 
 /// Perform authentication-related operations with Firebase
 class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
@@ -13,16 +15,15 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   Future<AuthResultModel> authenticate(final AuthParams params) async {
     try {
       AuthCredential? credential;
-      if ((params.identifier?.isNotEmpty ?? false) &&
-          (params.secret?.isNotEmpty ?? false)) {
-        credential =
-            await _signInWithEmailPassword(params.identifier!, params.secret!);
-      } else {
+      if (params.identifier == 'anonymous' && params.secret == null) {
         credential = await _signInAnonymously();
+      } else {
+        credential = await _signInWithEmailPassword(
+          params.identifier ?? '',
+          params.secret ?? '',
+        );
       }
-      return AuthResultModel(
-        token: credential?.token.toString() ?? credential?.accessToken,
-      );
+      return credential!.toModel();
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleAuthError(e));
     } catch (e) {
@@ -67,13 +68,11 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
       await _firebaseAuth.currentUser?.linkWithCredential(response.credential!);
     }
 
-    return AuthResultModel(
-      token: response.credential?.token.toString() ??
-          response.credential?.accessToken,
-    );
+    return response.credential!.toModel();
   }
 
   /// Sign out a user
+  @override
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
@@ -99,4 +98,8 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
     }
     return errorMessage;
   }
+
+  @override
+  FutureOr<AuthedUserModel?> currentUser() =>
+      _firebaseAuth.currentUser?.toModel;
 }

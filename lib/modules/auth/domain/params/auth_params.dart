@@ -16,6 +16,12 @@ class AuthParams with EquatableMixin {
     required this.secret,
   });
 
+  /// Creates an empty [AuthParams] object
+  factory AuthParams.anonymous() => AuthParams(
+        identifier: 'anonymous',
+        secret: null,
+      );
+
   @override
   List<Object?> get props => [
         identifier,

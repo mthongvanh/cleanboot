@@ -75,4 +75,9 @@ abstract class AppServiceLocator extends ServiceLocator {
       instanceName: identifier,
     );
   }
+
+  @override
+  bool isRegistered<T extends Object>({final String? identifier}) {
+    return _getIt.isRegistered<T>(instanceName: identifier);
+  }
 }

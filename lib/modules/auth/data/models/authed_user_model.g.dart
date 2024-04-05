@@ -11,6 +11,7 @@ AuthedUserModel _$AuthedUserModelFromJson(Map<String, dynamic> json) =>
       identifier: json['identifier'] as String?,
       email: json['email'] as String?,
       username: json['username'] as String?,
+      anonymous: json['anonymous'] as bool,
     );
 
 Map<String, dynamic> _$AuthedUserModelToJson(AuthedUserModel instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$AuthedUserModelToJson(AuthedUserModel instance) =>
       'identifier': instance.identifier,
       'email': instance.email,
       'username': instance.username,
+      'anonymous': instance.anonymous,
     };
