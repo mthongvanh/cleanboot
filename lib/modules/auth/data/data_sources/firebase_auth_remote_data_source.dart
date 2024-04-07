@@ -82,19 +82,19 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
     String errorMessage;
     switch (e.code) {
       case 'invalid-email':
-        errorMessage = 'Your email address appears to be malformed.';
+        errorMessage = 'Your email or password is incorrect.';
       case 'wrong-password':
-        errorMessage = 'Your password is wrong.';
+        errorMessage = 'Your email or password is incorrect.';
       case 'user-not-found':
-        errorMessage = "User with this email doesn't exist.";
+        errorMessage = "Your email or password is incorrect.";
       case 'user-disabled':
-        errorMessage = 'User with this email has been disabled.';
+        errorMessage = 'Oops... Something went wrong.(1)';
       case 'too-many-requests':
-        errorMessage = 'Too many requests. Try again later.';
+        errorMessage = 'Oops... Something went wrong.(2)';
       case 'operation-not-allowed':
-        errorMessage = 'Signing in with Email and Password is not enabled.';
+        errorMessage = 'Login method is not enabled.';
       default:
-        errorMessage = 'An undefined Error happened.';
+        errorMessage = 'Oops... Something went wrong.(3)';
     }
     return errorMessage;
   }
