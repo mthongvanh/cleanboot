@@ -13,3 +13,6 @@ bricks:
   #     path: bricks/widget
   page:
     path: ./page/
+
+  use_case:
+    path: ./use_case/
