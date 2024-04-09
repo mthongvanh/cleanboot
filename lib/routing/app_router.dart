@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
+export 'data/data.dart';
+
 /// {@template AppRouter}
 /// Defines routes for the application
 /// {@endtemplate}
