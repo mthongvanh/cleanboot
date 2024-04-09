@@ -16,14 +16,10 @@ class RouteParams extends Equatable {
   /// Contains a Map-representation of custom data
   final Map<String, Object>? customMap;
 
-  /// Performs a function when called, e.g. updating some state
-  final void Function(Map<String, Object> parameters)? callback;
-
   /// {@macro RouteParams}
   const RouteParams({
     this.entityIdentifiers,
     this.customMap,
-    this.callback,
   });
 
   /// Connect the generated [_$RouteParamsFromJson] function to the `fromJson`
