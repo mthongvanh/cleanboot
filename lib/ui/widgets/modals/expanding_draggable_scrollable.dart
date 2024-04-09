@@ -9,6 +9,36 @@ import 'package:flutter/material.dart';
 /// [ExpandingDraggableScrollable.initialChildSize] is used in [initState] but
 /// after that, the [DraggableScrollableSheet]'s size derives from a private [_sheetPosition]
 /// variable
+///
+/// ```dart
+/// Example:
+/// Future<void> showSearchFilterOptions(final BuildContext context) async {
+///   final result = await showModalBottomSheet<Map<String, Object>?>(
+///     context: context,
+///     useRootNavigator: true,
+///     isScrollControlled: true,
+///     clipBehavior: Clip.hardEdge,
+///     backgroundColor:
+///       Theme.of(context).colorScheme.background.withOpacity(0.0),
+///     builder: (final ctx) => ExpandingDraggableScrollable(
+///       snap: true,
+///       initialChildSize: 0.85,
+///       snapSizes: const [
+///         0.25,
+///         0.85,
+///       ],
+///       builder: (final context, final scrollController) => ListView.builder(
+///         itemCount: 25,
+///         controller: scrollController,
+///         itemBuilder: (final ctx, final idx) => ListTile(
+///           title: Text('$idx'),
+///         ),
+///       ),
+///     ),
+///   );
+///   debugPrint('$result');
+/// }
+/// ```
 /// {@endtemplate}
 class ExpandingDraggableScrollable extends DraggableScrollableSheet {
   /// {@macro ExpandingDraggableScrollable}
