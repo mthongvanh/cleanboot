@@ -11,7 +11,10 @@ class {{identifier.pascalCase()}}PageController extends Controller<{{identifier.
   final {{identifier.pascalCase()}}PageViewModel _viewModel;
 
   /// Creates a new instance of [{{identifier.pascalCase()}}PageController]
-  {{identifier.pascalCase()}}PageController(this._viewModel);
+  {{identifier.pascalCase()}}PageController(
+    this._viewModel,
+    super.navigator,
+  );
 
   /// Perform some initialization steps
   FutureOr<void> init() async {

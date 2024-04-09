@@ -8,7 +8,10 @@ import '{{identifier.snakeCase()}}_view_model.dart';
 /// {@endtemplate}
 class {{identifier.pascalCase()}}Page extends StatelessWidget {
   /// {@macro Widget.PageName}
-  static const name = '{{identifier}}Page';
+  static const name = '{{identifier.pascalCase()}}Page';
+
+  /// {@macro Widget.PagePath}
+  static const path = '{{identifier.paramCase()}}Page';
 
   /// {@macro Widget.ViewModel}
   final {{identifier.pascalCase()}}PageViewModel viewModel;
@@ -32,7 +35,7 @@ class {{identifier.pascalCase()}}Page extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: MediaQuery.sizeOf(context).aspectRatio > 1 ? BoxFit.fitWidth : BoxFit.fitHeight,
-              image: const AssetImage('images/splash/splash_bg.jpeg'),
+              image: const AssetImage('assets/images/splash/splash_bg.jpeg'),
               opacity: 0.5,
             ),
           ),
@@ -40,7 +43,7 @@ class {{identifier.pascalCase()}}Page extends StatelessWidget {
             child: TextButton(
               onPressed: null,
               child: Lottie.asset(
-                'animations/paint_animation.json',
+                'assets/animations/paint_animation.json',
                 reverse: true,
               ),
             ),
