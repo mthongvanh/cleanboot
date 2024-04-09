@@ -16,3 +16,6 @@ bricks:
 
   use_case:
     path: ./use_case/
+
+  model_entity_mapper:
+    path: ./model_entity_mapper/
