@@ -10,6 +10,7 @@ FilterItem _$FilterItemFromJson(Map<String, dynamic> json) => FilterItem(
       key: json['key'] as String?,
       value: json['value'] as Object,
       displayText: json['displayText'] as String,
+      selected: json['selected'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$FilterItemToJson(FilterItem instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$FilterItemToJson(FilterItem instance) =>
       'key': instance.key,
       'value': instance.value,
       'displayText': instance.displayText,
+      'selected': instance.selected,
     };

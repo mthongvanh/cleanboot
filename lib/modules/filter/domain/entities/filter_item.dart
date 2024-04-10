@@ -7,7 +7,7 @@ part 'filter_item.g.dart';
 /// A filter option shown to the user
 /// {@endtemplate}
 @JsonSerializable()
-class FilterItem extends Equatable {
+class FilterItem {
   /// Object property identifier, e.g. userID or messageID
   final String? key;
 
@@ -17,18 +17,23 @@ class FilterItem extends Equatable {
   /// User-facing text to describe the value
   final String displayText;
 
+  /// Whether the filter has been selected
+  bool selected;
+
   /// {@macro FilterItem}
-  const FilterItem({
+  FilterItem({
     this.key,
     required this.value,
     required this.displayText,
+    this.selected = false,
   });
 
-  @override
+  /// Property values
   List<Object?> get props => [
         key,
         value,
         displayText,
+        selected,
       ];
 
   /// Connect the generated [_$FilterItemFromJson] function to the `fromJson`
