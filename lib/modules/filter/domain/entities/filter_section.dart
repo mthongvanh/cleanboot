@@ -22,21 +22,26 @@ class FilterSection extends Equatable {
   /// Whether to allow more than one selected filter. Defaults to false.
   final bool multiSelect;
 
+  /// How to display the options and allow the user to select filters
+  final String itemDisplayFormat;
+
   /// {@macro FilterSection}
   const FilterSection({
     required this.identifier,
     required this.filterItems,
     required this.displayText,
+    required this.itemDisplayFormat,
     this.multiSelect = false,
   });
 
   @override
   List<Object?> get props => [
-    identifier,
-    filterItems,
-    displayText,
-    multiSelect,
-  ];
+        identifier,
+        filterItems,
+        displayText,
+        multiSelect,
+        itemDisplayFormat,
+      ];
 
   /// Connect the generated [_$FilterSectionFromJson] function to the `fromJson`
   /// factory.

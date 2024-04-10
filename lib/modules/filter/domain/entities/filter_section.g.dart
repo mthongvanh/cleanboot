@@ -13,6 +13,7 @@ FilterSection _$FilterSectionFromJson(Map<String, dynamic> json) =>
           .map((e) => FilterItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       displayText: json['displayText'] as String,
+      itemDisplayFormat: json['itemDisplayFormat'] as String,
       multiSelect: json['multiSelect'] as bool? ?? false,
     );
 
@@ -22,4 +23,5 @@ Map<String, dynamic> _$FilterSectionToJson(FilterSection instance) =>
       'filterItems': instance.filterItems.map((e) => e.toJson()).toList(),
       'displayText': instance.displayText,
       'multiSelect': instance.multiSelect,
+      'itemDisplayFormat': instance.itemDisplayFormat,
     };

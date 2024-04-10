@@ -13,6 +13,7 @@ class _FilterSectionModelToEntityMapper
         filterItems: entity.filterItems.map((final e) => e.toModel).toList(),
         displayText: entity.displayText,
         multiSelect: entity.multiSelect,
+        itemDisplayFormat: entity.itemDisplayFormat,
       );
 
   @override
@@ -21,6 +22,7 @@ class _FilterSectionModelToEntityMapper
         filterItems: model.filterItems.map((final e) => e.toEntity).toList(),
         displayText: model.displayText,
         multiSelect: model.multiSelect,
+        itemDisplayFormat: model.itemDisplayFormat,
       );
 }
 
