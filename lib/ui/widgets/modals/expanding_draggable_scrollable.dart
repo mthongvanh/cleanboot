@@ -66,6 +66,8 @@ class _ExpandingDraggableScrollableState
   double _sheetPosition = 0.5;
   final double _dragSensitivity = 600;
 
+  Widget? child;
+
   @override
   void initState() {
     _sheetPosition = widget.initialChildSize;
@@ -74,8 +76,6 @@ class _ExpandingDraggableScrollableState
 
   @override
   Widget build(final BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
     return DraggableScrollableSheet(
       initialChildSize: _sheetPosition,
       maxChildSize: widget.maxChildSize,
@@ -90,29 +90,27 @@ class _ExpandingDraggableScrollableState
         final BuildContext context,
         final ScrollController scrollController,
       ) {
-        return ColoredBox(
-          color: colorScheme.background,
-          child: Column(
-            children: <Widget>[
-              _Grabber(
-                onVerticalDragUpdate: (final DragUpdateDetails details) {
-                  setState(() {
-                    _sheetPosition -= details.delta.dy / _dragSensitivity;
-                    if (_sheetPosition < 0.25) {
-                      _sheetPosition = 0.25;
-                    }
-                    if (_sheetPosition > 1.0) {
-                      _sheetPosition = 1.0;
-                    }
-                  });
-                },
-                isOnDesktopAndWeb: _isOnDesktopAndWeb,
-              ),
-              Flexible(
-                child: widget.builder(context, scrollController),
-              ),
-            ],
-          ),
+        child ??= widget.builder(context, scrollController);
+        return Column(
+          children: <Widget>[
+            _Grabber(
+              onVerticalDragUpdate: (final DragUpdateDetails details) {
+                setState(() {
+                  _sheetPosition -= details.delta.dy / _dragSensitivity;
+                  if (_sheetPosition < 0.25) {
+                    _sheetPosition = 0.25;
+                  }
+                  if (_sheetPosition > 1.0) {
+                    _sheetPosition = 1.0;
+                  }
+                });
+              },
+              isOnDesktopAndWeb: _isOnDesktopAndWeb,
+            ),
+            Flexible(
+              child: child ?? const SizedBox(),
+            ),
+          ],
         );
       },
     );
