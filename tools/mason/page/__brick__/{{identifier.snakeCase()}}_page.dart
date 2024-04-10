@@ -6,7 +6,7 @@ import '{{identifier.snakeCase()}}_view_model.dart';
 
 /// {@template {{identifier.pascalCase()}}}
 /// {@endtemplate}
-class {{identifier.pascalCase()}}Page extends StatelessWidget {
+class {{identifier.pascalCase()}}Page extends StatefulWidget {
   /// {@macro Widget.PageName}
   static const name = '{{identifier.pascalCase()}}Page';
 
@@ -27,9 +27,21 @@ class {{identifier.pascalCase()}}Page extends StatelessWidget {
   });
 
   @override
+  State<{{identifier.pascalCase()}}Page> createState() => _{{identifier.pascalCase()}}PageState();
+}
+
+class _{{identifier.pascalCase()}}PagePageState extends State<{{identifier.pascalCase()}}Page> {
+
+  @override
+  void initState() {
+    unawaited(widget.controller.init());
+    super.initState();
+  }
+
+  @override
   Widget build(final BuildContext context) {
     return ListenableBuilder(
-      listenable: viewModel,
+      listenable: widget.viewModel,
       builder: (final context, final _) {
         return DecoratedBox(
           decoration: BoxDecoration(

@@ -4,11 +4,6 @@ import '../failures.dart';
 /// Describes a failure encountered while loading a locale
 /// {@endtemplate}
 class LocaleLoadFailure extends Failure {
-  const LocaleLoadFailure._({
-    super.description,
-    super.reason,
-    super.code,
-  });
 
   /// Auth credentials were invalid
   factory LocaleLoadFailure({
@@ -21,4 +16,10 @@ class LocaleLoadFailure extends Failure {
         reason: reason ?? 'Encountered an unknown error loading localized strings',
         code: code ?? 7000,
       );
+
+  const LocaleLoadFailure._({
+    super.description,
+    super.reason,
+    super.code,
+  });
 }

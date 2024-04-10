@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import '../../../routing/app_router.dart';
 import 'view_model.dart';
@@ -18,6 +20,10 @@ abstract class Controller<T extends Widget> {
   /// Controls values in a [ViewModel] that is associated to a [Widget]
   Controller(this.navigator);
 
+  /// Initialize any controller state
+  Future<void> init() async {
+    return;
+  }
 
   /// Notifies widgets that values on the view model have been updated
   void notify() => viewModel.update();
