@@ -62,7 +62,12 @@ class _FilterPageState extends State<FilterPage> {
             final slivers = <Widget>[
               SliverAppBar(
                 pinned: true,
-                title: const Text('Filters'),
+                title: widget.viewModel.filterPageTitle != null
+                    ? Text(
+                        widget.viewModel.filterPageTitle!,
+                        style: widget.viewModel.filterPageTitleStyle,
+                      )
+                    : null,
                 actions: [
                   IconButton(
                     onPressed: () => debugPrint('deselect all'),
@@ -87,7 +92,7 @@ class _FilterPageState extends State<FilterPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(
+                  padding: const EdgeInsets.fromLTRB(
                     16.0,
                     8.0,
                     16.0,
@@ -109,17 +114,25 @@ class _FilterPageState extends State<FilterPage> {
                               ),
                             ),
                             backgroundColor: MaterialStateColor.resolveWith(
-                              (final states) => Colors.black87,
+                              (final states) =>
+                                  widget.viewModel.applyFilterBackground ??
+                                  Colors.black87,
                             ),
                             foregroundColor: MaterialStateColor.resolveWith(
-                              (final states) => Colors.grey.shade100,
+                              (final states) =>
+                                  widget.viewModel.applyFilterStyle?.color ??
+                                  Colors.grey.shade100,
                             ),
                           ),
                           onPressed: () =>
                               widget.controller.dismissPage(context),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                            child: Text('Filter'),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: Text(
+                              widget.viewModel.applyFilterText ??
+                                  'Apply Filters',
+                              style: widget.viewModel.applyFilterStyle,
+                            ),
                           ),
                         ),
                       ),

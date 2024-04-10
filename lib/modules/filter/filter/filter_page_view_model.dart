@@ -23,6 +23,15 @@ class FilterPageViewModel extends ViewModel<FilterPage> {
   /// Background color for the page
   final Color? background;
 
+  /// Background color for apply filter button
+  final Color? applyFilterBackground;
+
+  /// Text displayed on the apply filter button
+  final String? applyFilterText;
+
+  /// Appearance customization for the apply filter button
+  final TextStyle? applyFilterStyle;
+
   /// Provides values to display on the [FilterPage]
   FilterPageViewModel({
     this.background,
@@ -30,5 +39,8 @@ class FilterPageViewModel extends ViewModel<FilterPage> {
     this.filterPageTitleStyle,
     this.sectionHeaderBackground,
     this.filterSectionHeaderStyle,
+    this.applyFilterBackground,
+    this.applyFilterText,
+    this.applyFilterStyle,
   });
 }
