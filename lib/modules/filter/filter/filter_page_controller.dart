@@ -49,7 +49,33 @@ class FilterPageController extends Controller<FilterPage> {
     final FilterItem selectedFilter, {
     final bool selected = false,
   }) {
-    selectedFilter.selected = !selectedFilter.selected;
+    final items = selectedSection.filterItems.map((final e) {
+      FilterItem item;
+      if (e.value == selectedFilter.value) {
+        item = FilterItem(
+          value: e.value,
+          displayText: e.displayText,
+          selected: selected,
+        );
+      } else {
+        // if multiselect is not enabled for the filter set, deselect any selected
+        // filters
+        if (!selectedSection.multiSelect && e.selected) {
+          item = FilterItem(
+            key: e.key,
+            value: e.value,
+            displayText: e.displayText,
+          );
+        } else {
+          // all other items remain unselected
+          item = e;
+        }
+      }
+      return item;
+    }).toList();
+
+    selectedSection.filterItems.replaceRange(0, items.length-1, items);
+
     viewModel.update();
   }
 
@@ -61,6 +87,7 @@ class FilterPageController extends Controller<FilterPage> {
         FilterSection(
           identifier: section.identifier,
           displayText: section.displayText,
+          itemDisplayFormat: section.itemDisplayFormat,
           filterItems: section.filterItems
               .where(
                 (final FilterItem element) => element.selected,
