@@ -92,6 +92,13 @@ class FilterPageController extends Controller<FilterPage> {
     }
     return false;
   }
+
+  /// Clear any selected filters
+  void clearFilters() {
+    viewModel.selectedFilters.value.clear();
+    viewModel.update();
+  }
+
   /// Pop the current page and return any selected filters
   void dismissPage(final BuildContext context) {
     Navigator.of(context).pop(viewModel.selectedFilters.value);

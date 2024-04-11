@@ -68,7 +68,7 @@ class _FilterPageState extends State<FilterPage> {
                     : null,
                 actions: [
                   IconButton(
-                    onPressed: () => debugPrint('deselect all'),
+                    onPressed: () => widget.controller.clearFilters(),
                     icon: const Icon(
                       Icons.delete_forever,
                     ),
