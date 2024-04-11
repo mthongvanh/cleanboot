@@ -172,7 +172,8 @@ class _FilterPageState extends State<FilterPage> {
                   section.itemDisplayFormat)) {
                 FilterItemDisplayFormat.filterChip =>
                   _buildFilterChips(section),
-                FilterItemDisplayFormat.textField => const SizedBox(),
+                FilterItemDisplayFormat.textField =>
+                  _buildAutoCompleteTextField(section),
               },
             ),
           );
@@ -201,4 +202,96 @@ class _FilterPageState extends State<FilterPage> {
             )
             .toList(),
       );
+
+  Widget _buildAutoCompleteTextField(final FilterSection filterSection) {
+    TextEditingController? controller;
+    final ac = Autocomplete<FilterItem>(
+      displayStringForOption: (final option) => option.displayText,
+      fieldViewBuilder: (
+        final BuildContext context,
+        final TextEditingController textEditingController,
+        final FocusNode focusNode,
+        final VoidCallback onFieldSubmitted,
+      ) {
+        controller = textEditingController;
+        return TextField(
+          controller: textEditingController,
+          focusNode: focusNode,
+          onSubmitted: (final String? text) => onFieldSubmitted(),
+        );
+      },
+      optionsBuilder: (final TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const [];
+        }
+        final List<FilterItem> matches = [];
+        try {
+          matches.addAll(
+            widget.viewModel.filters.value
+                .firstWhere((final section) {
+                  return section.identifier == filterSection.identifier;
+                })
+                .filterItems
+                .where(
+                  (final FilterItem element) =>
+                      element.value is String &&
+                      (element.value as String)
+                          .toLowerCase()
+                          .contains(textEditingValue.text.toLowerCase()),
+                )
+                .toList(),
+          );
+        } catch (e) {
+          debugPrint(e.toString());
+        }
+        return matches;
+      },
+      onSelected: (final FilterItem selection) {
+        widget.controller.addFilter(
+          filterSection,
+          selection,
+          selected: true,
+        );
+        controller?.text = '';
+      },
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionSelectedOptions(filterSection),
+        ac,
+      ],
+    );
+  }
+
+  Widget _buildSectionSelectedOptions(final FilterSection section) {
+    final items = widget.viewModel.selectedFilters.value
+        .where((final element) => element.identifier == section.identifier)
+        .firstOrNull
+        ?.filterItems;
+
+    // only add padding if there are selected filters to display
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: items?.isNotEmpty ?? false ? 8.0 : 0,
+      ),
+      child: Wrap(
+        spacing: 4.0,
+        runSpacing: 4.0,
+        children: items
+                ?.map(
+                  (final e) => FilterInputWidget(
+                    itemDisplayText: e.displayText,
+                    onSelect: ({required final selected}) =>
+                        widget.controller.addFilter(section, e),
+                    selected: true,
+                  ),
+                )
+                .toList() ??
+            [
+              const SizedBox(),
+            ],
+      ),
+    );
+  }
 }
