@@ -32,6 +32,8 @@ class FilterPageViewModel extends ViewModel<FilterPage> {
   /// Appearance customization for the apply filter button
   final TextStyle? applyFilterStyle;
 
+  final selectedFilters = ValueNotifier<List<FilterSection>>([]);
+
   /// Provides values to display on the [FilterPage]
   FilterPageViewModel({
     this.background,

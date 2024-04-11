@@ -34,6 +34,32 @@ class FilterSection extends Equatable {
     this.multiSelect = false,
   });
 
+  /// update selection status for a filter item
+  void update(
+    final FilterItem filterItem, {
+    final bool selected = false,
+  }) {
+    final updatedItems = filterItems.map((final e) {
+      if (!multiSelect && e != filterItem) {
+        return FilterItem(
+            key: e.key, value: e.value, displayText: e.displayText);
+      } else {
+        if (e == filterItem) {
+          return FilterItem(
+            key: e.key,
+            value: e.value,
+            displayText: e.displayText,
+            selected: selected,
+          );
+        } else {
+          return e;
+        }
+      }
+    });
+    filterItems..clear()
+    ..addAll(updatedItems);
+  }
+
   @override
   List<Object?> get props => [
         identifier,
