@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -11,7 +13,7 @@ class {{identifier.pascalCase()}}Page extends StatefulWidget {
   static const name = '{{identifier.pascalCase()}}Page';
 
   /// {@macro Widget.PagePath}
-  static const path = '{{identifier.paramCase()}}Page';
+  static const path = '{{identifier.paramCase()}}';
 
   /// {@macro Widget.ViewModel}
   final {{identifier.pascalCase()}}PageViewModel viewModel;
@@ -30,7 +32,7 @@ class {{identifier.pascalCase()}}Page extends StatefulWidget {
   State<{{identifier.pascalCase()}}Page> createState() => _{{identifier.pascalCase()}}PageState();
 }
 
-class _{{identifier.pascalCase()}}PagePageState extends State<{{identifier.pascalCase()}}Page> {
+class _{{identifier.pascalCase()}}PageState extends State<{{identifier.pascalCase()}}Page> {
 
   @override
   void initState() {

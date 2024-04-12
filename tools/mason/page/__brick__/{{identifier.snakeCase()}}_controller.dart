@@ -17,7 +17,8 @@ class {{identifier.pascalCase()}}PageController extends Controller<{{identifier.
   );
 
   /// Perform some initialization steps
-  FutureOr<void> init() async {
+  @override
+  Future<void> init() async {
     return;
   }
 
