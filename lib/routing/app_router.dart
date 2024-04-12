@@ -30,7 +30,7 @@ abstract class AppRouter {
   void go(
     final BuildContext context, {
     required final String routePath,
-    final Map<String, Object>? routeParameters,
+    final Map<String, Object?>? extra,
   }) =>
       throw UnimplementedError(
         'routers must implement the go function',
@@ -40,7 +40,7 @@ abstract class AppRouter {
   void goNamed(
     final BuildContext context, {
     required final String routeName,
-    final Map<String, Object>? routeParameters,
+    final Map<String, Object?>? extra,
   }) =>
       throw UnimplementedError(
         'routers must implement the goNamed function',
@@ -50,7 +50,7 @@ abstract class AppRouter {
   Future<T?> push<T>(
     final BuildContext context, {
     required final String routeIdentifier,
-    final Map<String, Object>? routeParameters,
+    final Map<String, Object?>? extra,
   }) =>
       throw UnimplementedError(
         'routers must implement the push function',
