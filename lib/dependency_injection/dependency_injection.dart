@@ -108,5 +108,14 @@ class DependencyInjection {
         SignOutUseCase(sl.get<AuthRepository>()),
       );
     }
+
+    if (locators
+        .where((final element) => element.isRegistered<UpdateUserDisplayNameUseCase>())
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<UpdateUserDisplayNameUseCase>(
+        UpdateUserDisplayNameUseCase(sl.get<AuthRepository>()),
+      );
+    }
   }
 }

@@ -18,6 +18,9 @@ abstract class AuthRemoteDataSource {
     required final String password,
   });
 
+  /// Update the authenticated user's display/user name
+  FutureOr<AuthedUserModel?> updateUserDisplayName(final String updatedName);
+
   /// Sign-out a user
   Future<void> signOut();
 }

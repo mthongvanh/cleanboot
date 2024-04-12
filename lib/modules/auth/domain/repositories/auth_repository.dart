@@ -17,6 +17,9 @@ abstract class AuthRepository {
   /// Currently authenticated user
   FutureOr<AuthedUser?> currentUser();
 
+  /// Update the authenticated user's display/user name
+  FutureOr<AuthedUser?> updateUserDisplayName(final String updatedName);
+
   /// Sign-out of a service
   Future<void> signOut();
 }

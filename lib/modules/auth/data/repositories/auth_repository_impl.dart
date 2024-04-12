@@ -36,4 +36,11 @@ class AuthRepositoryImpl extends AuthRepository {
     final AuthedUserModel? authed = await _remoteDataSource.currentUser();
     return authed?.toEntity;
   }
+
+  @override
+  FutureOr<AuthedUser?> updateUserDisplayName(final String updatedName) async {
+    final AuthedUserModel? authedUserModel =
+        await _remoteDataSource.updateUserDisplayName(updatedName);
+    return authedUserModel?.toEntity;
+  }
 }

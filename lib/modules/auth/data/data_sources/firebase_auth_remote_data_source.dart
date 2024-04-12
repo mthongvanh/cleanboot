@@ -102,4 +102,21 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   @override
   FutureOr<AuthedUserModel?> currentUser() =>
       _firebaseAuth.currentUser?.toModel;
+
+  @override
+  FutureOr<AuthedUserModel?> updateUserDisplayName(
+    final String updatedName,
+  ) async {
+    try {
+      await _firebaseAuth.currentUser?.updateDisplayName(updatedName);
+      return currentUser();
+    } on FirebaseAuthException catch (e) {
+      throw Exception(_handleAuthError(e));
+    } catch (e) {
+      debugPrint(
+        'error updating the firebase record for current user\n$e',
+      );
+      rethrow;
+    }
+  }
 }
