@@ -61,6 +61,7 @@ class _Insets {
   _Insets(this._scale);
   final double _scale;
 
+  late final double xxxs = 2 * _scale;
   late final double xxs = 4 * _scale;
   late final double xs = 8 * _scale;
   late final double sm = 16 * _scale;
