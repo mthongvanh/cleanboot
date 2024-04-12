@@ -80,4 +80,21 @@ abstract class AppServiceLocator extends ServiceLocator {
   bool isRegistered<T extends Object>({final String? identifier}) {
     return _getIt.isRegistered<T>(instanceName: identifier);
   }
+
+  /// Unregister a singleton from the service locator
+  @override
+  Future<void> unregister<T extends Object>({
+    final T? instance,
+    final String? identifier,
+  }) async {
+    if (_getIt.isRegistered(
+      instance: instance,
+      instanceName: identifier,
+    )) {
+      await _getIt.unregister(
+        instance: instance,
+        instanceName: identifier,
+      );
+    }
+  }
 }

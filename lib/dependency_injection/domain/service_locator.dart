@@ -36,4 +36,10 @@ abstract class ServiceLocator {
     final T Function() creator, {
     final String? identifier,
   });
+
+  /// Unregister a singleton from the service locator
+  Future<void> unregister<T extends Object>({
+    final T instance,
+    final String? identifier,
+  });
 }
