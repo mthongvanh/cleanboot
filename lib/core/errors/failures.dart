@@ -7,7 +7,7 @@ export 'l10n/locale_load_failure.dart';
 /// {@template Failure}
 /// Base class to describe failed operations
 /// {@endtemplate}
-abstract class Failure extends Equatable {
+class Failure extends Equatable {
   /// Description of failure, eg: Login failed
   final String? description;
 
