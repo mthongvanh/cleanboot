@@ -20,4 +20,15 @@ class AuthFailure extends Failure {
         reason: reason ?? 'Login failed due to invalid credentials',
         code: 8000,
       );
+
+  /// Sign up failed
+  factory AuthFailure.signUp({
+    final String? description,
+    final String? reason,
+  }) =>
+      AuthFailure._(
+        description: description ?? 'Sign up failed (8001)',
+        reason: reason ?? 'Sign up failed',
+        code: 8001,
+      );
 }

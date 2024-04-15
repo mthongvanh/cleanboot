@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import '../../../../cleanboot.dart';
 import '../../auth.dart';
+import '../params/sign_up_params.dart';
 
 /// Base class for implementing authentication
 abstract class AuthRepository {
@@ -10,12 +12,18 @@ abstract class AuthRepository {
   );
 
   /// Sign-up with a service
-  Future<AuthResultModel> signUp(
-    final AuthParams authParameters,
+  Future<AuthResult> signUp(
+    final SignUpParams authParameters,
   );
 
   /// Currently authenticated user
   FutureOr<AuthedUser?> currentUser();
+
+  /// Get display names
+  Future<List<String>> getDisplayNames(final GetDisplayNamesParams params);
+
+  /// Checks whether the display name exists already
+  Future<bool> displayNameExists(final DisplayNameExistsParams params);
 
   /// Update the authenticated user's display/user name
   FutureOr<AuthedUser?> updateUserDisplayName(final String updatedName);

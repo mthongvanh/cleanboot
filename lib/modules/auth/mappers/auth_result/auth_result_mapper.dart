@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../cleanboot.dart';
+import '../mappers.dart';
 
 class _AuthResultModelToEntityMapper
     extends Mapper<AuthResultModel, AuthResult> {
-  AuthResultModel fromFirestore(final AuthCredential firestoreCredentials) {
+  AuthResultModel fromFirestore(final UserCredential firestoreCredentials) {
     return AuthResultModel(
-      token: firestoreCredentials.token != null
-          ? firestoreCredentials.token.toString()
-          : firestoreCredentials.accessToken,
+      token: firestoreCredentials.user?.refreshToken ?? '',
+      user: firestoreCredentials.user?.toModel,
     );
   }
 
@@ -37,7 +37,7 @@ extension AuthResultEntityExt on AuthResult {
 }
 
 /// Maps a [UserCredential] from Firebase to an [AuthResultModel]
-extension AuthResultModelFirestoreExt on AuthCredential {
+extension AuthResultModelFirestoreExt on UserCredential {
   /// Maps a [AuthCredential] from Firebase to a [AuthResultModel]
   AuthResultModel toModel() {
     return _AuthResultModelToEntityMapper().fromFirestore(this);

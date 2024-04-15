@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../auth.dart';
+import '../../../../cleanboot.dart' as cleanboot;
+import '../../auth.dart' as cleanboot;
 import '../../domain/data_sources/auth_remote_data_source.dart';
 import '../../mappers/mappers.dart';
 
@@ -11,10 +13,12 @@ import '../../mappers/mappers.dart';
 class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  FirebaseFirestore get _firestore => FirebaseFirestore.instance;
+
   @override
-  Future<AuthResultModel> authenticate(final AuthParams params) async {
+  Future<cleanboot.AuthResultModel> authenticate(final cleanboot.AuthParams params) async {
     try {
-      AuthCredential? credential;
+      UserCredential? credential;
       if (params.identifier == 'anonymous' && params.secret == null) {
         credential = await _signInAnonymously();
       } else {
@@ -23,7 +27,12 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
           params.secret ?? '',
         );
       }
-      return credential!.toModel();
+
+      if (credential != null) {
+        return credential.toModel();
+      } else {
+        throw Exception('No user credential was found');
+      }
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleAuthError(e));
     } catch (e) {
@@ -33,14 +42,14 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   }
 
   /// Sign in anonymously
-  Future<AuthCredential?> _signInAnonymously() async {
+  Future<UserCredential?> _signInAnonymously() async {
     final UserCredential userCredential =
         await _firebaseAuth.signInAnonymously();
-    return userCredential.credential;
+    return userCredential;
   }
 
   /// Sign in with email and password
-  Future<AuthCredential?> _signInWithEmailPassword(
+  Future<UserCredential?> _signInWithEmailPassword(
     final String email,
     final String password,
   ) async {
@@ -49,26 +58,36 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
       email: email,
       password: password,
     );
-    return userCredential.credential;
+    return userCredential;
   }
 
   /// SIGN UP METHOD
   @override
-  Future<AuthResultModel> signUp({
+  Future<cleanboot.AuthResultModel> signUp({
     required final String identifier,
     required final String password,
+    final String? displayName,
   }) async {
-    final response = await _firebaseAuth.createUserWithEmailAndPassword(
+    late final UserCredential response;
+    response = await _firebaseAuth.createUserWithEmailAndPassword(
       email: identifier,
       password: password,
     );
 
+    final user = _firebaseAuth.currentUser;
     // link the anonymous user with a newly-created firebase user
     if (response.credential != null) {
-      await _firebaseAuth.currentUser?.linkWithCredential(response.credential!);
+      await user?.linkWithCredential(response.credential!);
     }
 
-    return response.credential!.toModel();
+    // only update the display name if one was supplied or it's different from
+    // the current display name
+    if ((displayName?.isNotEmpty ?? false) &&
+        (user?.displayName?.toLowerCase() != displayName!.toLowerCase())) {
+      await updateUserDisplayName(displayName);
+    }
+
+    return response.toModel();
   }
 
   /// Sign out a user
@@ -86,7 +105,7 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
       case 'wrong-password':
         errorMessage = 'Your email or password is incorrect.';
       case 'user-not-found':
-        errorMessage = "Your email or password is incorrect.";
+        errorMessage = 'Your email or password is incorrect.';
       case 'user-disabled':
         errorMessage = 'Oops... Something went wrong.(1)';
       case 'too-many-requests':
@@ -100,15 +119,39 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   }
 
   @override
-  FutureOr<AuthedUserModel?> currentUser() =>
+  FutureOr<cleanboot.AuthedUserModel?> currentUser() =>
       _firebaseAuth.currentUser?.toModel;
 
   @override
-  FutureOr<AuthedUserModel?> updateUserDisplayName(
+  FutureOr<cleanboot.AuthedUserModel?> updateUserDisplayName(
     final String updatedName,
   ) async {
     try {
-      await _firebaseAuth.currentUser?.updateDisplayName(updatedName);
+      final names = await _firestore.collection('displayNames').get();
+      bool unique = true;
+      for (final QueryDocumentSnapshot snapshot in names.docs) {
+        final displayName =
+            (snapshot.data()! as Map<String, dynamic>)['displayName'];
+        if ((snapshot.data()! as Map<String, dynamic>)['displayName'] != null) {
+          unique = displayName?.toString().toLowerCase() !=
+              updatedName.toLowerCase();
+          if (!unique) {
+            break;
+          }
+        }
+      }
+
+      if (!unique) {
+        throw Exception('Display name already exists');
+      }
+
+      final user = _firebaseAuth.currentUser;
+      await user?.updateDisplayName(updatedName);
+      await _firestore.collection('displayNames').add({
+        'userUid': user?.uid,
+        'displayName': updatedName,
+        'createdOn': FieldValue.serverTimestamp(),
+      });
       return currentUser();
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleAuthError(e));
@@ -118,5 +161,62 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
       );
       rethrow;
     }
+  }
+
+  @override
+  Future<List<String>> getDisplayNames(
+    final cleanboot.GetDisplayNamesParams params,
+  ) async {
+    try {
+      final source = Source.values.firstWhere(
+        (final element) =>
+            element.name.toLowerCase() == params.cacheType?.toLowerCase(),
+        orElse: () => Source.serverAndCache,
+      );
+
+      final options = GetOptions(
+        source: source,
+      );
+
+      final snapshot = await _firestore.collection('displayNames').get(options);
+      final names = snapshot.docs.map((final e) {
+        return e.get('displayName') as String;
+      }).toList();
+      return names;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(_handleAuthError(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> displayNameExists(final cleanboot.DisplayNameExistsParams params) async {
+    final source = Source.values.firstWhere(
+      (final element) =>
+          element.name.toLowerCase() == params.cacheType?.toLowerCase(),
+      orElse: () => Source.serverAndCache,
+    );
+
+    final options = GetOptions(
+      source: source,
+    );
+
+    final names = await _firestore.collection('displayNames').get(options);
+    bool unique = true;
+    for (final QueryDocumentSnapshot snapshot in names.docs) {
+      final displayName =
+          (snapshot.data()! as Map<String, dynamic>)['displayName'];
+      if (displayName != null) {
+        unique = displayName?.toString().toLowerCase() !=
+            params.displayName.toLowerCase();
+        if (!unique) {
+          break;
+        }
+      }
+    }
+
+    return unique;
   }
 }

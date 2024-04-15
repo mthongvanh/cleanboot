@@ -64,9 +64,9 @@ mixin ShowErrorDialog<SW extends StatefulWidget> on State<SW> {
       context: context,
       builder: (final BuildContext context) {
         return AlertDialog(
-          title: title != null
-              ? Text(title)
-              : titleBuilder?.call(context),
+          title: titleBuilder != null
+              ? titleBuilder.call(context)
+              : Text(title ?? 'Info'),
           content: Text(
             failure?.description ?? 'An error occurred',
             // textAlign: TextAlign.center,

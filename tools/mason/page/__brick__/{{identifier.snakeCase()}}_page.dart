@@ -32,11 +32,25 @@ class {{identifier.pascalCase()}}Page extends StatefulWidget {
   State<{{identifier.pascalCase()}}Page> createState() => _{{identifier.pascalCase()}}PageState();
 }
 
-class _{{identifier.pascalCase()}}PageState extends State<{{identifier.pascalCase()}}Page> {
+class _{{identifier.pascalCase()}}PageState extends State<{{identifier.pascalCase()}}Page> with ShowErrorDialog<{{identifier.pascalCase()}}Page> {
 
   @override
   void initState() {
     unawaited(widget.controller.init());
+
+    widget.viewModel.error.addListener(() async {
+      final failure = widget.viewModel.error.value;
+      if (failure != null) {
+      unawaited(
+        showErrorDialog(
+          context,
+          failure: widget.viewModel.error.value,
+        ),
+      );
+      widget.viewModel.error.value = null;
+    }
+  });
+
     super.initState();
   }
 

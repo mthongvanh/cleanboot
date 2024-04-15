@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import '../../../../cleanboot.dart';
 import '../../auth.dart';
 import '../../domain/data_sources/auth_remote_data_source.dart';
+import '../../domain/params/sign_up_params.dart';
 import '../../mappers/mappers.dart';
 
 /// {@template AuthRepositoryImpl}
@@ -19,10 +21,11 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<AuthResultModel> signUp(final AuthParams authParameters) {
+  Future<AuthResult> signUp(final SignUpParams authParameters) {
     return _remoteDataSource.signUp(
       identifier: authParameters.identifier ?? '',
       password: authParameters.secret ?? '',
+      displayName: authParameters.displayName,
     );
   }
 
@@ -42,5 +45,15 @@ class AuthRepositoryImpl extends AuthRepository {
     final AuthedUserModel? authedUserModel =
         await _remoteDataSource.updateUserDisplayName(updatedName);
     return authedUserModel?.toEntity;
+  }
+
+  @override
+  Future<List<String>> getDisplayNames(final GetDisplayNamesParams params) {
+    return _remoteDataSource.getDisplayNames(params);
+  }
+
+  @override
+  Future<bool> displayNameExists(final DisplayNameExistsParams params) {
+    return _remoteDataSource.displayNameExists(params);
   }
 }

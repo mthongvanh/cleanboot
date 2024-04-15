@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../../../cleanboot.dart';
 import '../../auth.dart';
 
 /// {@template AuthRemoteDataSource}
@@ -16,7 +17,14 @@ abstract class AuthRemoteDataSource {
   Future<AuthResultModel> signUp({
     required final String identifier,
     required final String password,
+    final String? displayName,
   });
+
+  /// Gets display names
+  Future<List<String>> getDisplayNames(final GetDisplayNamesParams params);
+
+  /// Checks whether the display name exists already
+  Future<bool> displayNameExists(final DisplayNameExistsParams params);
 
   /// Update the authenticated user's display/user name
   FutureOr<AuthedUserModel?> updateUserDisplayName(final String updatedName);

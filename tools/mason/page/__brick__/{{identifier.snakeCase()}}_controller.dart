@@ -22,6 +22,9 @@ class {{identifier.pascalCase()}}PageController extends Controller<{{identifier.
     return;
   }
 
+  void _onError(final Failure? failure) =>
+      viewModel.error.value = failure ?? const Failure();
+
   @override
   {{identifier.pascalCase()}}PageViewModel get viewModel => _viewModel;
 }

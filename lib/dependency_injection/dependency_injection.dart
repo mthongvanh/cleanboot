@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as flutter_dotenv;
 
 import '../cleanboot.dart';
 import '../modules/auth/domain/data_sources/auth_remote_data_source.dart';
+import '../modules/auth/domain/use_cases/sign_up_use_case.dart';
 import 'domain/firebase_options.dart';
 
 export 'data/app_service_locator.dart';
@@ -15,7 +16,8 @@ export 'domain/service_locator.dart';
 /// Provides a default authentication repo and auth use case that depends on firebase
 class DependencyInjection {
   /// Configure the service locator and app dependencies
-  static Future<Object?> bootstrap(final List<ServiceLocator> locators, {
+  static Future<Object?> bootstrap(
+    final List<ServiceLocator> locators, {
     required final AppInitConfig config,
   }) async {
     Object? result;
@@ -35,7 +37,7 @@ class DependencyInjection {
 
       result = Future.forEach(
         locators,
-            (final ServiceLocator element) => element.init(),
+        (final ServiceLocator element) => element.init(),
       );
     } catch (exception, stack) {
       debugPrintStack(
@@ -59,14 +61,14 @@ class DependencyInjection {
   /// with the service locators. E.g. if a AuthRemoteDataSource has already been
   /// registered, it will not get unregistered and replaced with the FirebaseAuthRemoteDataSource
   static Future<void> _setupDefaultAuthentication(
-      final List<ServiceLocator> locators,) async {
+    final List<ServiceLocator> locators,
+  ) async {
     // first check to see if a remote data source is registered because the
     // default auth repository depends on it
     if (locators
         .where((final element) => element.isRegistered<AuthRemoteDataSource>())
         .isEmpty) {
-      locators.first
-          .registerSingleton<AuthRemoteDataSource>(
+      locators.first.registerSingleton<AuthRemoteDataSource>(
         FirebaseAuthRemoteDataSource(),
       );
     }
@@ -110,11 +112,46 @@ class DependencyInjection {
     }
 
     if (locators
-        .where((final element) => element.isRegistered<UpdateUserDisplayNameUseCase>())
+        .where((final element) => element.isRegistered<SignUpUseCase>())
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<SignUpUseCase>(
+        SignUpUseCase(sl.get<AuthRepository>()),
+      );
+    }
+
+    if (locators
+        .where(
+          (final element) => element.isRegistered<GetDisplayNamesUseCase>(),
+        )
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<GetDisplayNamesUseCase>(
+        GetDisplayNamesUseCase(sl.get<AuthRepository>()),
+      );
+    }
+
+    if (locators
+        .where(
+          (final element) =>
+              element.isRegistered<UpdateUserDisplayNameUseCase>(),
+        )
         .isEmpty) {
       final sl = locators.first;
       sl.registerSingleton<UpdateUserDisplayNameUseCase>(
         UpdateUserDisplayNameUseCase(sl.get<AuthRepository>()),
+      );
+    }
+
+    if (locators
+        .where(
+          (final element) =>
+          element.isRegistered<DisplayNameExistsUseCase>(),
+    )
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<DisplayNameExistsUseCase>(
+        DisplayNameExistsUseCase(sl.get<GetDisplayNamesUseCase>()),
       );
     }
   }
