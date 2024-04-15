@@ -20,9 +20,6 @@ class SignUpPageViewModel extends ViewModel<SignUpPage> {
     SignUpResponseState.initialized,
   );
 
-  /// Whether the page is waiting for an async function to complete
-  final loading = ValueNotifier<bool>(false);
-
   /// Whether the text field obscures text
   final passwordObscured = ValueNotifier(true);
 }

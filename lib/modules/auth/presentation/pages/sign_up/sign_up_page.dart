@@ -118,7 +118,19 @@ class _SignUpPageState extends State<SignUpPage>
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: ElevatedButton(
+            child: _buildButton(
+              ValueListenableBuilder(
+                valueListenable: widget.viewModel.loading,
+                builder: (final ctx, final loading, final _) {
+                  return loading
+                      ? const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: CircularProgressIndicator(),
+                  )
+                      : const Text('Submit');
+                },
+              ),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
                   unawaited(widget.controller.signUp());
@@ -126,21 +138,43 @@ class _SignUpPageState extends State<SignUpPage>
                   debugPrint('validation failed');
                 }
               },
-              child: ValueListenableBuilder(
-                valueListenable: widget.viewModel.loading,
-                builder: (final ctx, final loading, final _) {
-                  return loading
-                      ? const Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: CircularProgressIndicator(),
-                        )
-                      : const Text('Submit');
-                },
-              ),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildButton(
+      final Widget text, {
+        final VoidCallback? onPressed,
+        final Color? foregroundColor,
+        final Color? backgroundColor,
+      }) {
+    return OutlinedButton(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.resolveWith(
+              (final states) => RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        side: MaterialStateBorderSide.resolveWith(
+              (final states) => const BorderSide(
+            style: BorderStyle.none,
+          ),
+        ),
+        backgroundColor: MaterialStateColor.resolveWith(
+              (final states) => backgroundColor ?? Colors.black87,
+        ),
+        foregroundColor: MaterialStateColor.resolveWith(
+              (final states) => foregroundColor ?? Colors.grey.shade100,
+        ),
+      ),
+      onPressed: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: text,
+      ),
     );
   }
 

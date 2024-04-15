@@ -102,16 +102,16 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
   @override
   Widget build(final BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('House Paintz'),
-      //   centerTitle: true,
-      // ),
+      appBar: AppBar(
+        title: Text(widget.viewModel.title),
+        centerTitle: true,
+      ),
       body: ListenableBuilder(
         listenable: widget.viewModel,
         builder: (final context, final _) {
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(32.0),
+              padding: const EdgeInsets.only(left: 32.0, right: 32.0),
               child: SingleChildScrollView(
                 child: buildContentColumn(context),
               ),
@@ -202,8 +202,7 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
 
   Widget _buildSignUpButton(final BuildContext context) {
     return _buildButton(
-      'Sign-up',
-      // backgroundColor: Theme.of(context).colorScheme.primary,
+      const Text('Sign-up'),
       onPressed: () {
         unawaited(widget.controller.navigateToSignUp(context));
       },
@@ -212,7 +211,21 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
 
   Widget _buildSubmitButton() {
     return _buildButton(
-      'Login',
+      ValueListenableBuilder(
+        valueListenable: widget.viewModel.loading,
+        builder: (final ctx, final loading, final _) {
+          return loading
+              ? SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.grey.shade100,
+                ),
+              )
+              : const Text('Login');
+        },
+      ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
       onPressed: () {
         if (_formKey.currentState?.validate() ?? false) {
@@ -224,7 +237,7 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
   }
 
   Widget _buildButton(
-    final String text, {
+    final Widget text, {
     final VoidCallback? onPressed,
     final Color? foregroundColor,
     final Color? backgroundColor,
@@ -251,7 +264,7 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
       onPressed: onPressed,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Text(text),
+        child: text,
       ),
     );
   }

@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../cleanboot.dart';
 import '../sign_up/sign_up_page.dart';
-import '../sign_up/sign_up_view_model.dart';
 
 /// Controls values on a view model to update widgets
 class LoginPageController extends Controller<LoginPage> {
@@ -40,17 +39,23 @@ class LoginPageController extends Controller<LoginPage> {
 
   /// Perform login
   Future<void> login(final BuildContext context) async {
-    final response = await signInUseCase.execute(
-      AuthParams(
-        identifier: identifierEditingController.text,
-        secret: secretEditingController.text,
-      ),
-    );
+    if (!viewModel.loading.value) {
+      viewModel.loading.value = true;
 
-    if (response.result != null) {
-      Navigator.of(context).pop();
-    } else {
-      _onError(response.failure);
+      final response = await signInUseCase.execute(
+        AuthParams(
+          identifier: identifierEditingController.text,
+          secret: secretEditingController.text,
+        ),
+      );
+
+      viewModel.loading.value = false;
+
+      if (response.result != null) {
+        Navigator.of(context).pop();
+      } else {
+        _onError(response.failure);
+      }
     }
   }
 
