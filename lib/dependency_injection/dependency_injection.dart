@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as flutter_dotenv;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../cleanboot.dart';
 import '../modules/auth/domain/data_sources/auth_remote_data_source.dart';
@@ -35,6 +37,11 @@ class DependencyInjection {
         }
       }
 
+
+      if (config.revenueCatEnabled) {
+        await _setupRevenueCat();
+      }
+
       result = Future.forEach(
         locators,
         (final ServiceLocator element) => element.init(),
@@ -54,6 +61,19 @@ class DependencyInjection {
       options: options ?? DefaultFirebaseOptions.currentPlatform,
     );
   }
+
+  static Future<void> _setupRevenueCat() async {
+    try {
+      await Purchases.configure(PurchasesConfiguration(dotenv.env["REVENUE_CAT_API_KEY"]!));
+
+
+
+    } catch (e) {
+      // _handleError(e);
+    }
+  }
+
+
 
   /// Setup default authentication flow that depends on firebase
   ///

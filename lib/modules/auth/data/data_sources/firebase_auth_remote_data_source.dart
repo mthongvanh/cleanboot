@@ -8,7 +8,6 @@ import '../../../../cleanboot.dart' as cleanboot;
 import '../../auth.dart' as cleanboot;
 import '../../domain/data_sources/auth_remote_data_source.dart';
 import '../../mappers/mappers.dart';
-
 /// Perform authentication-related operations with Firebase
 class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
