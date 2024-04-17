@@ -2,7 +2,7 @@ import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
 
 import '../../../../cleanboot.dart';
 import '../../data/models/subscribed_user_model.dart';
-import '../../domain/entities/authed_user.dart';
+import '../../domain/entities/subscribed_user.dart';
 
 class _SubscribedUserModelToEntityMapper
     extends Mapper<SubscribedUserModel, SubscribedUser> {

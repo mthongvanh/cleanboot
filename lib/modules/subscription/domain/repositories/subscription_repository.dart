@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import '../../data/models/available_subscriptions_model.dart';
 import '../../data/models/subscription_result_model.dart';
+import '../params/purchase_params.dart';
 import '../params/subscription_params.dart';
 
 /// Base class for implementing subscription management

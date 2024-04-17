@@ -1,4 +1,5 @@
 import '../../../../cleanboot.dart';
+import 'entitlement_model.dart';
 
 /// {@template SubscriptionResultModel}
 /// External representation of a subscription result
@@ -6,14 +7,14 @@ import '../../../../cleanboot.dart';
 class SubscriptionResultModel extends SubscriptionResult {
   /// {@macro SubscriptionResultModel}
   const SubscriptionResultModel({
-    super.isActive,
+    required super.isActive,
     super.entitlements,
   });
 
   /// Application representation of remote model's json representation
   SubscriptionResultModel fromJson(final Map<String, Object?> json) {
     return SubscriptionResultModel(
-      isActive: json['isActive'] as bool?,
+      isActive: json['isActive'] as bool,
       entitlements: (json['entitlements'] as List<dynamic>?)
           ?.map((e) => EntitlementModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -39,13 +40,15 @@ class SubscriptionResultModel extends SubscriptionResult {
 /// Model for an entitlement, representing access levels in subscriptions
 /// {@endtemplate}
 class EntitlementModel extends Entitlement {
-  /// {@macro EntitlementModel}
-  const EntitlementModel({
+  final String id;
+  final bool isActive;
+
+  // Removed `const` keyword
+  EntitlementModel({
     required this.id,
     required this.isActive,
   });
 
-  /// Constructs an `EntitlementModel` from JSON
   factory EntitlementModel.fromJson(Map<String, dynamic> json) {
     return EntitlementModel(
       id: json['id'] as String,
@@ -53,13 +56,7 @@ class EntitlementModel extends Entitlement {
     );
   }
 
-  /// The unique identifier for the entitlement
-  final String id;
-
-  /// Whether this entitlement is currently active
-  final bool isActive;
-
-  /// Converts an `EntitlementModel` to JSON
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -68,8 +65,5 @@ class EntitlementModel extends Entitlement {
   }
 
   @override
-  List<Object> get props => [
-    id,
-    isActive,
-  ];
+  List<Object> get props => [id, isActive];
 }

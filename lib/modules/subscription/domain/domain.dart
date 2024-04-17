@@ -1,5 +1,5 @@
 export 'entities/subscription_result.dart';
-export 'entities/authed_user.dart';
+export 'entities/subscribed_user.dart';
 export 'enums/enums.dart';
 export 'params/subscription_params.dart';
 export 'repositories/subscription_repository.dart';

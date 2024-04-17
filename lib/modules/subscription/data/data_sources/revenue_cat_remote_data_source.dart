@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 
 import '../../../../cleanboot.dart' as cleanboot;
 import '../../domain/data_sources/subscription_remote_data_source.dart';
+import '../../domain/params/purchase_params.dart' as cleanboot;
 import '../../mappers/mappers.dart';
+import '../models/available_subscriptions_model.dart';
 
 
 /// Manage subscription-related operations with RevenueCat
@@ -13,7 +15,7 @@ class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
   @override
   Future<cleanboot.SubscriptionResultModel> fetchSubscriptionStatus(final cleanboot.SubscriptionParams params) async {
     try {
-      final purchaserInfo = await Purchases.getPurchaserInfo();
+      final purchaserInfo = await Purchases.getCustomerInfo();
       final isActive = purchaserInfo.entitlements.all[params.entitlementId]?.isActive ?? false;
       return cleanboot.SubscriptionResultModel(isActive: isActive);
     } catch (e) {
@@ -25,10 +27,10 @@ class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
   @override
   Future<cleanboot.SubscriptionResultModel> purchaseSubscription(final cleanboot.PurchaseParams params) async {
     try {
-      final purchaserInfo = await Purchases.purchasePackage(params.package);
+      final purchaserInfo = await Purchases.purchasePackage(params.props);
       final isActive = purchaserInfo.entitlements.all[params.entitlementId]?.isActive ?? false;
       return cleanboot.SubscriptionResultModel(isActive: isActive);
-    } on PurchasesException catch (e) {
+    } on PurchasesError catch (e) {
       throw Exception(_handlePurchaseError(e));
     } catch (e) {
       debugPrint(e.toString());
@@ -39,7 +41,7 @@ class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
   @override
   Future<void> restorePurchases() async {
     try {
-      await Purchases.restoreTransactions();
+      await Purchases.restorePurchases();
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
@@ -47,7 +49,7 @@ class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
   }
 
   // Handle RevenueCat purchase errors
-  String _handlePurchaseError(final PurchasesException e) {
+  String _handlePurchaseError(final PurchasesError e) {
     String errorMessage;
     switch (e.code) {
       case PurchasesErrorCode.purchaseCancelledError:
@@ -67,11 +69,10 @@ class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
   }
 
   @override
-  Future<cleanboot.AvailableSubscriptionsModel> fetchAvailableSubscriptions() async {
+  Future<AvailableSubscriptionsModel> fetchAvailableSubscriptions() async {
     try {
       final offerings = await Purchases.getOfferings();
-      final packages = offerings.current?.availablePackages ?? [];
-      return packages.toModel();
+      return AvailableSubscriptionsModel.fromOfferings(offerings);
     } catch (e) {
       debugPrint(e.toString());
       rethrow;

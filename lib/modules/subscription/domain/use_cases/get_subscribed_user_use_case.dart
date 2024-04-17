@@ -1,5 +1,6 @@
 import '../../../../cleanboot.dart';
-import '../entities/authed_user.dart';
+import '../entities/subscribed_user.dart';
+import '../errors/subscription_failures.dart';
 import '../repositories/subscription_repository.dart';
 
 /// Gets the currently subscribed user along with their subscription details

@@ -1,5 +1,7 @@
 import '../../../../cleanboot.dart';
 import '../entities/subscription_result.dart';
+import '../errors/subscription_failures.dart';
+import '../params/purchase_params.dart';
 import '../repositories/subscription_repository.dart';
 
 /// Purchase a subscription

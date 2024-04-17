@@ -6,7 +6,7 @@ import '../../../../core/domain/user.dart';
 part 'subscribed_user.g.dart';
 
 /// {@template SubscribedUser}
-/// Subscribed user that extends the [User] base class, including subscription details
+/// Subscribed user that extends the [SubscribedUser] base class, including subscription details
 ///
 /// [User] class:
 /// {@macro User}

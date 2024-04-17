@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../cleanboot.dart';
+import '../../../data/models/subscription_plan.dart';
 import '../../../domain/enums/subscription_status.dart';
 import 'subscribe_page.dart';
 

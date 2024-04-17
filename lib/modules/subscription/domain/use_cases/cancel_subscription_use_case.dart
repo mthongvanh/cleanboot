@@ -1,13 +1,12 @@
 import '../../../../cleanboot.dart';
 import '../params/subscription_params.dart';
 import '../repositories/subscription_repository.dart';
+import '../errors/subscription_failures.dart';  // Make sure this path is correct
 
 /// Cancels a user's subscription
 class CancelSubscriptionUseCase extends UseCase<void, SubscriptionParams> {
-  /// Provides access to a service for managing subscriptions
   final SubscriptionRepository _repository;
 
-  /// Cancels a user's subscription
   CancelSubscriptionUseCase(this._repository);
 
   @override
