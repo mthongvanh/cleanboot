@@ -279,7 +279,7 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
       ) {
         return TextFormField(
           controller: widget.controller.secretEditingController,
-          obscureText: visible,
+          obscureText: !visible,
           onSaved: (final val) => widget.viewModel.userSecret = val!,
           decoration: InputDecoration(
             labelText: 'Password',
@@ -289,8 +289,8 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
               },
               icon: Icon(
                 visible
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility_outlined,
               ),
             ),
           ),
