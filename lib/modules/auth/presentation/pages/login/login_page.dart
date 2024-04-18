@@ -216,13 +216,13 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
         builder: (final ctx, final loading, final _) {
           return loading
               ? SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.grey.shade100,
-                ),
-              )
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.grey.shade100,
+                  ),
+                )
               : const Text('Login');
         },
       ),
@@ -270,11 +270,32 @@ class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
   }
 
   Widget _buildSecretFormField() {
-    return TextFormField(
-      controller: widget.controller.secretEditingController,
-      obscureText: true,
-      onSaved: (final val) => widget.viewModel.userSecret = val!,
-      decoration: const InputDecoration(labelText: 'Password'),
+    return ValueListenableBuilder(
+      valueListenable: widget.viewModel.secretVisible,
+      builder: (
+        final context,
+        final visible,
+        final _,
+      ) {
+        return TextFormField(
+          controller: widget.controller.secretEditingController,
+          obscureText: visible,
+          onSaved: (final val) => widget.viewModel.userSecret = val!,
+          decoration: InputDecoration(
+            labelText: 'Password',
+            suffixIcon: IconButton(
+              onPressed: () {
+                widget.viewModel.secretVisible.value = !visible;
+              },
+              icon: Icon(
+                visible
+                    ? Icons.visibility_outlined
+                    : Icons.visibility_off_outlined,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
