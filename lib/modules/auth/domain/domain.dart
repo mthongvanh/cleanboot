@@ -11,4 +11,5 @@ export 'use_cases/get_authed_user_use_case.dart';
 export 'use_cases/get_display_names_use_case.dart';
 export 'use_cases/sign_in_use_case.dart';
 export 'use_cases/sign_out_use_case.dart';
+export 'use_cases/stream_authed_user_use_case.dart';
 export 'use_cases/update_user_display_name_user_case.dart';

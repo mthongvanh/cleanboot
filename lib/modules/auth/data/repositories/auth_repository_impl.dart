@@ -56,4 +56,12 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<bool> displayNameExists(final DisplayNameExistsParams params) {
     return _remoteDataSource.displayNameExists(params);
   }
+
+  @override
+  Stream<AuthedUser?> streamCurrentUser() {
+    return _remoteDataSource
+        .streamCurrentUser()
+        .map((final event) => event?.toEntity)
+        .asBroadcastStream();
+  }
 }

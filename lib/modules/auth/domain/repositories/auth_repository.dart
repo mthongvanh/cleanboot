@@ -19,6 +19,9 @@ abstract class AuthRepository {
   /// Currently authenticated user
   FutureOr<AuthedUser?> currentUser();
 
+  /// Listen for changes on the authed user
+  Stream<AuthedUser?> streamCurrentUser();
+
   /// Get display names
   Future<List<String>> getDisplayNames(final GetDisplayNamesParams params);
 

@@ -94,6 +94,16 @@ class DependencyInjection {
     }
 
     if (locators
+        .where(
+            (final element) => element.isRegistered<StreamAuthedUserUseCase>())
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<StreamAuthedUserUseCase>(
+        StreamAuthedUserUseCase(sl.get<AuthRepository>()),
+      );
+    }
+
+    if (locators
         .where((final element) => element.isRegistered<SignInUseCase>())
         .isEmpty) {
       final sl = locators.first;
@@ -145,9 +155,8 @@ class DependencyInjection {
 
     if (locators
         .where(
-          (final element) =>
-          element.isRegistered<DisplayNameExistsUseCase>(),
-    )
+          (final element) => element.isRegistered<DisplayNameExistsUseCase>(),
+        )
         .isEmpty) {
       final sl = locators.first;
       sl.registerSingleton<DisplayNameExistsUseCase>(

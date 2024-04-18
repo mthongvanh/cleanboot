@@ -13,6 +13,9 @@ abstract class AuthRemoteDataSource {
   /// Current authenticated user
   FutureOr<AuthedUserModel?> currentUser();
 
+  /// Stream the current user and listen for user changes (e.g. sign in as different user)
+  Stream<AuthedUserModel?> streamCurrentUser();
+
   /// Sign-up a user
   Future<AuthResultModel> signUp({
     required final String identifier,
