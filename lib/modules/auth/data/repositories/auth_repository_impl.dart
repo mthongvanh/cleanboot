@@ -64,4 +64,9 @@ class AuthRepositoryImpl extends AuthRepository {
         .map((final event) => event?.toEntity)
         .asBroadcastStream();
   }
+
+  @override
+  Future<void> deleteUser() {
+    return _remoteDataSource.deleteUser();
+  }
 }

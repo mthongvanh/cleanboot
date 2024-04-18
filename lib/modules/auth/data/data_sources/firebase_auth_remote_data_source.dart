@@ -17,7 +17,8 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
 
   @override
   Future<cleanboot.AuthResultModel> authenticate(
-      final cleanboot.AuthParams params) async {
+    final cleanboot.AuthParams params,
+  ) async {
     try {
       UserCredential? credential;
       if (params.identifier == 'anonymous' && params.secret == null) {
@@ -240,5 +241,17 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
     }
 
     return unique;
+  }
+
+  @override
+  Future<void> deleteUser() async {
+    try {
+      await _firebaseAuth.currentUser?.delete();
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.toString());
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
   }
 }

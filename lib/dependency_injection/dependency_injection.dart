@@ -163,5 +163,17 @@ class DependencyInjection {
         DisplayNameExistsUseCase(sl.get<GetDisplayNamesUseCase>()),
       );
     }
+
+    if (locators
+        .where(
+          (final element) =>
+          element.isRegistered<DeleteUserUseCase>(),
+    )
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<DeleteUserUseCase>(
+        DeleteUserUseCase(sl.get<AuthRepository>()),
+      );
+    }
   }
 }
