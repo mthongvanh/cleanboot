@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:purchases_flutter/models/customer_info_wrapper.dart';
 
 import '../../../../core/domain/user.dart';
 
@@ -47,4 +48,6 @@ class SubscribedUser extends User with EquatableMixin {
     isActiveSubscriber,
     entitlements,
   ];
+
+  static Future<SubscribedUser> fromRevenueCatUserInfo(CustomerInfo userInfo) {}
 }

@@ -34,4 +34,16 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
   Future<AvailableSubscriptionsModel> fetchAvailableSubscriptions() async {
     return _remoteDataSource.fetchAvailableSubscriptions();
   }
+
+  @override
+  Future<void> cancelSubscription(SubscriptionParams subscriptionParameters) {
+    // TODO: implement cancelSubscription
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<SubscribedUser> currentUser() {
+    // TODO: implement currentUser
+    throw UnimplementedError();
+  }
 }

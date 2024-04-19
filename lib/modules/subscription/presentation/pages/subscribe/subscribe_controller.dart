@@ -36,7 +36,7 @@ class SubscribePageController extends Controller<SubscribePage> {
       final response = await purchaseSubscriptionUseCase.execute(
         PurchaseParams(
           userId: viewModel.currentUserId, // Assuming this is set somewhere in your ViewModel
-          subscriptionId: subscriptionPlanController.text,
+          subscriptionId: subscriptionPlanController.text, entitlementId: '',
         ),
       );
 

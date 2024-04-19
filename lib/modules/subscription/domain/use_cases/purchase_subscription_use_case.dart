@@ -21,7 +21,7 @@ class PurchaseSubscriptionUseCase extends UseCase<SubscriptionResult, PurchasePa
     try {
       result = await _repository.purchaseSubscription(params);
     } catch (e) {
-      failure = SubscriptionFailure.purchaseFailed(description: e.toString());
+      failure = SubscriptionFailure.cancellationFailed(description: e.toString());
     }
     return (
     failure: failure,

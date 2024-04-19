@@ -6,7 +6,7 @@ import '../../domain/entities/subscribed_user.dart';
 
 class _SubscribedUserModelToEntityMapper
     extends Mapper<SubscribedUserModel, SubscribedUser> {
-  SubscribedUserModel fromPurchaserInfo(final purchases.PurchaserInfo info) {
+  SubscribedUserModel fromPurchaserInfo(final purchases.CustomerInfo info) {
     return SubscribedUserModel(
       identifier: info.originalAppUserId,
       email: '', // Email is not directly available from PurchaserInfo
@@ -33,7 +33,7 @@ class _SubscribedUserModelToEntityMapper
     email: model.email,
     username: model.username,
     anonymous: model.anonymous,
-    isActiveSubscriber: model.isActiveSubscriber,
+    isActiveSubscriber: model.isActiveSubscriber!,
     entitlements: model.entitlements,
   );
 }
@@ -52,7 +52,7 @@ extension SubscribedUserEntityExt on SubscribedUser {
 }
 
 /// Maps PurchaserInfo from RevenueCat to a [SubscribedUserModel]
-extension PurchaserInfoToModelExt on purchases.PurchaserInfo {
+extension PurchaserInfoToModelExt on purchases.CustomerInfo {
   /// Maps PurchaserInfo to a [SubscribedUserModel]
   SubscribedUserModel toModel() {
     return _SubscribedUserModelToEntityMapper().fromPurchaserInfo(this);

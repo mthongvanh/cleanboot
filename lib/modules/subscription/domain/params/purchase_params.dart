@@ -1,23 +1,16 @@
 import 'package:equatable/equatable.dart';
 
-/// {@template PurchaseParams}
-/// Provides values used to perform a purchase of a subscription
-/// {@endtemplate}
 class PurchaseParams extends Equatable {
-  /// The identifier of the user making the purchase
   final String userId;
-
-  /// The identifier of the subscription or product being purchased
   final String subscriptionId;
+  final String entitlementId; // Add this if needed
 
-  /// Additional parameters like promo codes might also be included here
-
-  /// {@macro PurchaseParams}
   PurchaseParams({
     required this.userId,
     required this.subscriptionId,
+    required this.entitlementId, // Make optional if not always required
   });
 
   @override
-  List<Object> get props => [userId, subscriptionId];
+  List<Object?> get props => [userId, subscriptionId, entitlementId];
 }

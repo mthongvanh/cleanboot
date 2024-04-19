@@ -7,7 +7,7 @@ import '../mappers.dart';
 
 class _SubscriptionResultModelToEntityMapper
     extends Mapper<SubscriptionResultModel, SubscriptionResult> {
-  SubscriptionResultModel fromPurchaserInfo(final PurchaserInfo purchaserInfo) {
+  SubscriptionResultModel fromPurchaserInfo(final CustomerInfo purchaserInfo) {
     return SubscriptionResultModel(
       isActive: purchaserInfo.entitlements.active.isNotEmpty,
       entitlements: purchaserInfo.entitlements.active.values
@@ -46,7 +46,7 @@ extension SubscriptionResultEntityExt on SubscriptionResult {
 }
 
 /// Maps a [PurchaserInfo] from RevenueCat to a [SubscriptionResultModel]
-extension PurchaserInfoToModelExt on PurchaserInfo {
+extension PurchaserInfoToModelExt on CustomerInfo {
   /// Maps this PurchaserInfo to a [SubscriptionResultModel]
   SubscriptionResultModel toModel() {
     return _SubscriptionResultModelToEntityMapper().fromPurchaserInfo(this);

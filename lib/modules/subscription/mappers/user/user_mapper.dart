@@ -7,7 +7,7 @@ class _UserModelToEntityMapper extends Mapper<UserModel, User> {
     email: entity.email,
     username: entity.username,
     anonymous: entity.anonymous,
-    isActiveSubscriber: entity.isActiveSubscriber, // New field
+    isActiveSubscriber: entity.isActiveSubscriber!, // New field
     entitlements: entity.entitlements, // New field
   );
 

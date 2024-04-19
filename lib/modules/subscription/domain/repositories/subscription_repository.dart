@@ -2,6 +2,7 @@ import 'dart:async';
 
 import '../../data/models/available_subscriptions_model.dart';
 import '../../data/models/subscription_result_model.dart';
+import '../entities/subscribed_user.dart';
 import '../params/purchase_params.dart';
 import '../params/subscription_params.dart';
 
@@ -18,4 +19,10 @@ abstract class SubscriptionRepository {
 
   /// Fetches all available subscriptions
   Future<AvailableSubscriptionsModel> fetchAvailableSubscriptions();
+
+  Future<void> cancelSubscription(final SubscriptionParams subscriptionParameters);
+
+  Future<SubscribedUser> currentUser();
+
+
 }

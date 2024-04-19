@@ -24,11 +24,16 @@ class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
     }
   }
 
-  @override
   Future<cleanboot.SubscriptionResultModel> purchaseSubscription(final cleanboot.PurchaseParams params) async {
     try {
-      final purchaserInfo = await Purchases.purchasePackage(params.props);
-      final isActive = purchaserInfo.entitlements.all[params.entitlementId]?.isActive ?? false;
+      final offerings = await Purchases.getOfferings();
+      final packageToPurchase = offerings.current?.availablePackages.firstWhere(
+            (pkg) => pkg.identifier == params.subscriptionId,
+        orElse: () => throw Exception("Package not found."),
+      );
+
+      final purchaserInfo = await Purchases.purchasePackage(packageToPurchase!);
+      final isActive = purchaserInfo.entitlements.all[params.subscriptionId]?.isActive ?? false;
       return cleanboot.SubscriptionResultModel(isActive: isActive);
     } on PurchasesError catch (e) {
       throw Exception(_handlePurchaseError(e));
@@ -37,6 +42,7 @@ class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
       rethrow;
     }
   }
+
 
   @override
   Future<void> restorePurchases() async {
