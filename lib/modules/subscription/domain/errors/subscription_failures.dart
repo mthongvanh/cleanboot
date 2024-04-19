@@ -8,4 +8,8 @@ class SubscriptionFailure extends Failure {
   factory SubscriptionFailure.cancellationFailed({String? description}) {
     return SubscriptionFailure(message: description ?? "Failed to cancel subscription.");
   }
+
+  factory SubscriptionFailure.issueWithSubscription({String? description}) {
+    return SubscriptionFailure(message: description ?? "Issue with subscription.");
+  }
 }
