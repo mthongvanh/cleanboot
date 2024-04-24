@@ -66,4 +66,8 @@ class EntitlementModel extends Entitlement {
 
   @override
   List<Object> get props => [id, isActive];
+
+  toEntity() {}
+
+
 }

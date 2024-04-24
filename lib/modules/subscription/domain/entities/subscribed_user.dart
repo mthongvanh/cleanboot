@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:purchases_flutter/models/customer_info_wrapper.dart';
 
 import '../../../../core/domain/user.dart';
+import '../../../auth/auth.dart';
 
 part 'subscribed_user.g.dart';
 
@@ -13,7 +14,7 @@ part 'subscribed_user.g.dart';
 /// {@macro User}
 /// {@endtemplate}
 @JsonSerializable()
-class SubscribedUser extends User with EquatableMixin {
+class SubscribedUser extends AuthedUser with EquatableMixin {
   /// Indicates whether the user is an active subscriber
   final bool isActiveSubscriber;
 
@@ -49,5 +50,5 @@ class SubscribedUser extends User with EquatableMixin {
     entitlements,
   ];
 
-  static Future<SubscribedUser> fromRevenueCatUserInfo(CustomerInfo userInfo) {}
+  // static Future<SubscribedUser> fromRevenueCatUserInfo(CustomerInfo userInfo) {}
 }

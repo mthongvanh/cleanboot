@@ -28,7 +28,7 @@ class _SubscriptionResultModelToEntityMapper
   @override
   SubscriptionResult toEntity(final SubscriptionResultModel model) => SubscriptionResult(
     isActive: model.isActive,
-    entitlements: model.entitlements?.map((e) => e.toEntity()).toList(),
+    entitlements: model.entitlements!.map((e) => e.toEntity()).toList(),
   );
 }
 
