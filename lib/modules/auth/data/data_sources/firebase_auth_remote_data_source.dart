@@ -255,3 +255,29 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
     }
   }
 }
+/*
+/// Transforms firebase exceptions to Strings
+extension FirebaseAuthExceptionTransformer on FirebaseAuthException {
+  /// Transforms firebase auth exceptions to Strings
+  String handleAuthError(final FirebaseAuthException e) {
+    String errorMessage;
+    switch (e.code) {
+      case 'invalid-email':
+        errorMessage = 'Your email or password is incorrect.';
+      case 'wrong-password':
+        errorMessage = 'Your email or password is incorrect.';
+      case 'user-not-found':
+        errorMessage = 'Your email or password is incorrect.';
+      case 'user-disabled':
+        errorMessage = 'Oops... Something went wrong.(1)';
+      case 'too-many-requests':
+        errorMessage = 'Oops... Something went wrong.(2)';
+      case 'operation-not-allowed':
+        errorMessage = 'Login method is not enabled.';
+      default:
+        errorMessage = 'Oops... Something went wrong.(3)';
+    }
+    return errorMessage;
+  }
+}
+ */
