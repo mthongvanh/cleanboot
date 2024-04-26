@@ -15,7 +15,9 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   FirebaseFirestore get _firestore => FirebaseFirestore.instance;
 
   @override
-  Future<cleanboot.AuthResultModel> authenticate(final cleanboot.AuthParams params) async {
+  Future<cleanboot.AuthResultModel> authenticate(
+    final cleanboot.AuthParams params,
+  ) async {
     try {
       UserCredential? credential;
       if (params.identifier == 'anonymous' && params.secret == null) {
@@ -122,6 +124,26 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
       _firebaseAuth.currentUser?.toModel;
 
   @override
+  Stream<cleanboot.AuthedUserModel?> streamCurrentUser() {
+    try {
+      return _firebaseAuth
+          .userChanges()
+          .map<cleanboot.AuthedUserModel?>((final User? event) {
+        if (event != null) {
+          return event.toModel;
+        } else {
+          return null;
+        }
+      }).asBroadcastStream();
+    } on FirebaseAuthException catch (e) {
+      throw Exception(_handleAuthError(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
   FutureOr<cleanboot.AuthedUserModel?> updateUserDisplayName(
     final String updatedName,
   ) async {
@@ -191,7 +213,8 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   }
 
   @override
-  Future<bool> displayNameExists(final cleanboot.DisplayNameExistsParams params) async {
+  Future<bool> displayNameExists(
+      final cleanboot.DisplayNameExistsParams params) async {
     final source = Source.values.firstWhere(
       (final element) =>
           element.name.toLowerCase() == params.cacheType?.toLowerCase(),
@@ -218,4 +241,42 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
 
     return unique;
   }
+
+  @override
+  Future<void> deleteUser() async {
+    try {
+      await _firebaseAuth.currentUser?.delete();
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.toString());
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
 }
+/*
+/// Transforms firebase exceptions to Strings
+extension FirebaseAuthExceptionTransformer on FirebaseAuthException {
+  /// Transforms firebase auth exceptions to Strings
+  String handleAuthError(final FirebaseAuthException e) {
+    String errorMessage;
+    switch (e.code) {
+      case 'invalid-email':
+        errorMessage = 'Your email or password is incorrect.';
+      case 'wrong-password':
+        errorMessage = 'Your email or password is incorrect.';
+      case 'user-not-found':
+        errorMessage = 'Your email or password is incorrect.';
+      case 'user-disabled':
+        errorMessage = 'Oops... Something went wrong.(1)';
+      case 'too-many-requests':
+        errorMessage = 'Oops... Something went wrong.(2)';
+      case 'operation-not-allowed':
+        errorMessage = 'Login method is not enabled.';
+      default:
+        errorMessage = 'Oops... Something went wrong.(3)';
+    }
+    return errorMessage;
+  }
+}
+ */

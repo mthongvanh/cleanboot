@@ -11,11 +11,15 @@ bricks:
   #   git:
   #     url: https://github.com/felangel/mason.git
   #     path: bricks/widget
+
+  feature_folders:
+    path: ./feature_folders/
+
+  model_entity_mapper:
+    path: ./model_entity_mapper/
+
   page:
     path: ./page/
 
   use_case:
     path: ./use_case/
-
-  model_entity_mapper:
-    path: ./model_entity_mapper/

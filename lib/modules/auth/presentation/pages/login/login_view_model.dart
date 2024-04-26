@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../../../../../cleanboot.dart';
 
 
@@ -9,6 +11,9 @@ class LoginPageViewModel extends ViewModel<LoginPage> {
 
   /// User secret (password) entered in the text editing controller
   String userSecret = '';
+
+  /// Whether the secret is displayed in plain text or obscured
+  final secretVisible = ValueNotifier(false);
 
   /// Page title displayed in the scaffold's title bar
   final String title;
