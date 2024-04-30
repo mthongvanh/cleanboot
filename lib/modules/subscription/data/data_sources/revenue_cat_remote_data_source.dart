@@ -13,18 +13,18 @@ import '../models/available_subscriptions_model.dart';
 /// Manage subscription-related operations with RevenueCat
 class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
   @override
-  Future<cleanboot.SubscriptionResultModel> fetchSubscriptionStatus(final cleanboot.SubscriptionParams params) async {
+  Future<cleanboot.SubscriptionStatusModel> getSubscriptionStatus(final cleanboot.SubscriptionParams params) async {
     try {
       final purchaserInfo = await Purchases.getCustomerInfo();
       final isActive = purchaserInfo.entitlements.all[params.entitlementId]?.isActive ?? false;
-      return cleanboot.SubscriptionResultModel(isActive: isActive);
+      return cleanboot.SubscriptionStatusModel(isActive: isActive);
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
   }
 
-  Future<cleanboot.SubscriptionResultModel> purchaseSubscription(final cleanboot.PurchaseParams params) async {
+  Future<cleanboot.SubscriptionStatusModel> purchaseSubscription(final cleanboot.PurchaseParams params) async {
     try {
       final offerings = await Purchases.getOfferings();
       final packageToPurchase = offerings.current?.availablePackages.firstWhere(
@@ -34,7 +34,7 @@ class RevenueCatRemoteDataSource extends SubscriptionsRemoteDataSource {
 
       final purchaserInfo = await Purchases.purchasePackage(packageToPurchase!);
       final isActive = purchaserInfo.entitlements.all[params.subscriptionId]?.isActive ?? false;
-      return cleanboot.SubscriptionResultModel(isActive: isActive);
+      return cleanboot.SubscriptionStatusModel(isActive: isActive);
     } on PurchasesError catch (e) {
       throw Exception(_handlePurchaseError(e));
     } catch (e) {

@@ -4,6 +4,7 @@ import '../../../../cleanboot.dart';
 import '../../domain/data_sources/subscription_remote_data_source.dart';
 import '../../domain/params/purchase_params.dart';
 import '../../mappers/mappers.dart';
+import '../../mappers/subscription_result/subscription_status_mapper.dart';
 import '../models/available_subscriptions_model.dart';
 
 /// {@template SubscriptionRepositoryImpl}
@@ -16,12 +17,13 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
   SubscriptionRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<SubscriptionResultModel> fetchSubscriptionStatus(final SubscriptionParams subscriptionParameters) {
-    return _remoteDataSource.fetchSubscriptionStatus(subscriptionParameters);
+  Future<SubscriptionStatus> getSubscriptionStatus(final SubscriptionParams subscriptionParameters) async {
+    final subscriptionStatus =  await _remoteDataSource.getSubscriptionStatus(subscriptionParameters);
+    return subscriptionStatus.toEntity;
   }
 
   @override
-  Future<SubscriptionResultModel> purchaseSubscription(final PurchaseParams purchaseParameters) {
+  Future<SubscriptionStatusModel> purchaseSubscription(final PurchaseParams purchaseParameters) {
     return _remoteDataSource.purchaseSubscription(purchaseParameters);
   }
 
@@ -41,9 +43,4 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
     throw UnimplementedError();
   }
 
-  @override
-  Future<SubscribedUser> currentUser() {
-    // TODO: implement currentUser
-    throw UnimplementedError();
-  }
 }
