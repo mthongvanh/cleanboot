@@ -33,9 +33,9 @@ class _SubscribePageState extends State<SubscribePage>
   @override
   void initState() {
     super.initState();
-    widget.controller.init();
+    unawaited(widget.controller.init());
     widget.viewModel.subscriptionResponseState.addListener(() {
-      if (widget.viewModel.subscriptionResponseState.value == SubscriptionStatus.success) {
+      if (widget.viewModel.subscriptionResponseState.value == SubscriptionState.success) {
         _showSuccessAlert();
       }
     });
@@ -65,7 +65,7 @@ class _SubscribePageState extends State<SubscribePage>
                   'Choose Your Plan',
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                ..._buildPlanOptions(),
+                // ..._buildPlanOptions(),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _attemptSubscription,
@@ -78,25 +78,25 @@ class _SubscribePageState extends State<SubscribePage>
       ),
     );
   }
-
-  List<Widget> _buildPlanOptions() {
-    // Assuming `planOptions` is a list of plan details provided by the ViewModel
-    return widget.viewModel.planOptions.map((plan) {
-      return ListTile(
-        title: Text(plan.name),
-        subtitle: Text('\$${plan.price}/month'),
-        leading: Radio<String>(
-          value: plan.id,
-          groupValue: widget.viewModel.selectedPlanId,
-          onChanged: (value) {
-            if (value != null) {
-              widget.viewModel.selectPlan(value);
-            }
-          },
-        ),
-      );
-    }).toList();
-  }
+  //
+  // List<Widget> _buildPlanOptions() {
+  //   // Assuming `planOptions` is a list of plan details provided by the ViewModel
+  //   return widget.viewModel.planOptions.map((plan) {
+  //     return ListTile(
+  //       title: Text(plan.name),
+  //       subtitle: Text('\$${plan.price}/month'),
+  //       leading: Radio<String>(
+  //         value: plan.id,
+  //         groupValue: widget.viewModel!.selectedPlanId,
+  //         onChanged: (value) {
+  //           if (value != null) {
+  //             widget.viewModel.selectPlan(value);
+  //           }
+  //         },
+  //       ),
+  //     );
+  //   }).toList();
+  // }
 
   void _attemptSubscription() {
     if (_formKey.currentState?.validate() ?? false) {

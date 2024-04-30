@@ -8,6 +8,9 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../cleanboot.dart';
 import '../modules/auth/domain/data_sources/auth_remote_data_source.dart';
 import '../modules/auth/domain/use_cases/sign_up_use_case.dart';
+import '../modules/modules.dart';
+import '../modules/subscription/domain/data_sources/subscription_remote_data_source.dart';
+import '../modules/subscription/domain/use_cases/get_subscription_status_use_case.dart';
 import 'domain/firebase_options.dart';
 
 export 'data/app_service_locator.dart';
@@ -40,6 +43,7 @@ class DependencyInjection {
 
       if (config.revenueCatEnabled) {
         await _setupRevenueCat();
+        await _setupDefaultInAppPurchases(locators);
       }
 
       result = Future.forEach(
@@ -70,6 +74,48 @@ class DependencyInjection {
 
     } catch (e) {
       // _handleError(e);
+    }
+  }
+
+
+  static Future<void> _setupDefaultInAppPurchases(
+      final List<ServiceLocator> locators,
+
+      ) async {
+
+    if (locators
+        .where((final element) => element.isRegistered<SubscriptionsRemoteDataSource>())
+        .isEmpty) {
+      locators.first.registerSingleton<SubscriptionsRemoteDataSource>(
+        RevenueCatRemoteDataSource(),
+      );
+    }
+
+    if (locators
+        .where((final element) => element.isRegistered<SubscriptionRepository>())
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<SubscriptionRepository>(
+        SubscriptionRepositoryImpl(sl.get<SubscriptionsRemoteDataSource>()),
+      );
+    }
+
+    if (locators
+        .where((final element) => element.isRegistered<GetSubscriptionStatusUseCase>())
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<GetSubscriptionStatusUseCase>(
+        GetSubscriptionStatusUseCase(sl.get<SubscriptionRepository>()),
+      );
+    }
+
+    if (locators
+        .where((final element) => element.isRegistered<PurchaseSubscriptionUseCase>())
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerSingleton<PurchaseSubscriptionUseCase>(
+        PurchaseSubscriptionUseCase(sl.get<SubscriptionRepository>()),
+      );
     }
   }
 
