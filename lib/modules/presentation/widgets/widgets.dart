@@ -1,1 +1,1 @@
-export 'show_error_dialog_mixin.dart';
+export 'show_alert_dialog_mixin.dart';

@@ -34,7 +34,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage>
-    with ShowErrorDialog<SignUpPage> {
+    with ShowAlertDialog<SignUpPage> {
   final _formKey = GlobalKey<FormState>(debugLabel: 'signUpFormKey');
 
   @override
@@ -124,9 +124,9 @@ class _SignUpPageState extends State<SignUpPage>
                 builder: (final ctx, final loading, final _) {
                   return loading
                       ? const Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: CircularProgressIndicator(),
-                  )
+                          padding: EdgeInsets.all(5.0),
+                          child: CircularProgressIndicator(),
+                        )
                       : const Text('Submit');
                 },
               ),
@@ -146,28 +146,28 @@ class _SignUpPageState extends State<SignUpPage>
   }
 
   Widget _buildButton(
-      final Widget text, {
-        final VoidCallback? onPressed,
-        final Color? foregroundColor,
-        final Color? backgroundColor,
-      }) {
+    final Widget text, {
+    final VoidCallback? onPressed,
+    final Color? foregroundColor,
+    final Color? backgroundColor,
+  }) {
     return OutlinedButton(
       style: ButtonStyle(
         shape: MaterialStateProperty.resolveWith(
-              (final states) => RoundedRectangleBorder(
+          (final states) => RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
         side: MaterialStateBorderSide.resolveWith(
-              (final states) => const BorderSide(
+          (final states) => const BorderSide(
             style: BorderStyle.none,
           ),
         ),
         backgroundColor: MaterialStateColor.resolveWith(
-              (final states) => backgroundColor ?? Colors.black87,
+          (final states) => backgroundColor ?? Colors.black87,
         ),
         foregroundColor: MaterialStateColor.resolveWith(
-              (final states) => foregroundColor ?? Colors.grey.shade100,
+          (final states) => foregroundColor ?? Colors.grey.shade100,
         ),
       ),
       onPressed: onPressed,

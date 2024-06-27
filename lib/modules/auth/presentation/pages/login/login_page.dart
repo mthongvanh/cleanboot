@@ -83,7 +83,7 @@ class LoginPage extends StatefulWidget {
   }
 }
 
-class _LoginPageState extends State<LoginPage> with ShowErrorDialog<LoginPage> {
+class _LoginPageState extends State<LoginPage> with ShowAlertDialog<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override

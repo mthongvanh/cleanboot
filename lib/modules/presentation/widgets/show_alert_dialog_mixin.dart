@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../cleanboot.dart';
 
-/// Shows a default error dialog
-mixin ShowErrorDialog<SW extends StatefulWidget> on State<SW> {
+/// Shows default dialogs
+mixin ShowAlertDialog<SW extends StatefulWidget> on State<SW> {
   /// displays an error dialog
   Future<T?> showAuthErrorDialog<T>(
     final BuildContext context, {
@@ -88,5 +90,48 @@ mixin ShowErrorDialog<SW extends StatefulWidget> on State<SW> {
       },
     );
     return result;
+  }
+
+  /// Show an alert with a large green check icon
+  void showSuccessAlert({
+    required final BuildContext context,
+    final String? message,
+    final String? actionText,
+    final VoidCallback? action,
+  }) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (final context) {
+          return AlertDialog(
+            icon: CircleAvatar(
+              minRadius: 40,
+              child: Icon(
+                Icons.check,
+                color: Theme.of(context).colorScheme.onSurface,
+                size: 50,
+              ),
+            ),
+            content: Text(
+              message ?? 'OK!',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  action?.call();
+                },
+                child: Text(
+                  actionText ?? 'Continue',
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

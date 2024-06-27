@@ -87,11 +87,10 @@ class _Shadows {
   /// Default shadow for [PaintzCard] items
   final cardOffset = [
     BoxShadow(
-      color: Colors.black.withOpacity(0.75),
+      color: Colors.black.withOpacity(0.5),
       offset: const Offset(-10, 35),
       blurRadius: 30.0,
       spreadRadius: -35.0,
-      blurStyle: BlurStyle.outer,
     ),
   ];
 }
