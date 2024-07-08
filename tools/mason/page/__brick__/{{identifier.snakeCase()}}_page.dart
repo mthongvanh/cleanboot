@@ -33,7 +33,7 @@ class {{identifier.pascalCase()}}Page extends StatefulWidget {
   State<{{identifier.pascalCase()}}Page> createState() => _{{identifier.pascalCase()}}PageState();
 }
 
-class _{{identifier.pascalCase()}}PageState extends State<{{identifier.pascalCase()}}Page> with ShowErrorDialog<{{identifier.pascalCase()}}Page> {
+class _{{identifier.pascalCase()}}PageState extends State<{{identifier.pascalCase()}}Page> with ShowAlertDialog<{{identifier.pascalCase()}}Page> {
 
   @override
   void initState() {
