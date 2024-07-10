@@ -240,7 +240,7 @@ class _SignUpPageState extends State<SignUpPage>
     return [
       _buildTitle('Select display name'),
       _buildSectionDescription(
-        'This name will be displayed to all other House Paintz users (at least 6 characters)',
+        'This name will be displayed to all other HousePaintz users (at least 6 characters)',
       ),
       TextFormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// {@template TitledListView}
@@ -76,6 +77,12 @@ class TitledListView<T> extends StatelessWidget {
   /// Clip behavior for the [ListView]
   final Clip? listViewClip;
 
+  /// Notifies widget whether an async operation is in progress
+  final ValueNotifier<bool>? loadingNotifier;
+
+  /// Widget displayed to indicate loading progress instead of the default [CircularProgressIndicator]
+  final Widget? loadingIndicator;
+
   /// {@macro TitledListView}
   const TitledListView({
     super.key,
@@ -91,6 +98,8 @@ class TitledListView<T> extends StatelessWidget {
     required this.items,
     this.onItemSelected,
     this.listViewClip,
+    this.loadingNotifier,
+    this.loadingIndicator,
   });
 
   @override
@@ -110,6 +119,8 @@ class TitledListView<T> extends StatelessWidget {
         _buildContent(
           context,
           builder: itemBuilder,
+          loading: loadingNotifier,
+          loadingIndicator: loadingIndicator,
         ),
       ],
     );
@@ -188,23 +199,49 @@ class TitledListView<T> extends StatelessWidget {
       horizontal: 16.0,
     ),
     final Axis scrollDirection = Axis.horizontal,
+    final ValueListenable<bool>? loading,
+    final Widget? loadingIndicator,
   }) {
     return LayoutBuilder(
       builder: (final context, final constraints) {
+        final child = ListView.builder(
+          clipBehavior: listViewClip ?? Clip.hardEdge,
+          itemCount: items.length,
+          padding: contentListViewPadding,
+          scrollDirection: scrollDirection,
+          itemBuilder: (final ctx, final idx) {
+            return GestureDetector(
+              onTap: () => onItemSelected?.call(ctx, idx),
+              child: itemBuilder(ctx, idx),
+            );
+          },
+        );
+
+        Widget content;
+        if (loading != null) {
+          content = ValueListenableBuilder(
+            valueListenable: loading,
+            builder: (final context, final value, _) {
+              if (value) {
+                return Center(
+                  child: loadingIndicator ?? const SizedBox.square(
+                    dimension: 100,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 8.0,
+                    ),
+                  ),
+                );
+              } else {
+                return child;
+              }
+            },
+          );
+        } else {
+          content = child;
+        }
         return AspectRatio(
           aspectRatio: aspectRatio,
-          child: ListView.builder(
-            clipBehavior: listViewClip ?? Clip.hardEdge,
-            itemCount: items.length,
-            padding: contentListViewPadding,
-            scrollDirection: scrollDirection,
-            itemBuilder: (final ctx, final idx) {
-              return GestureDetector(
-                onTap: () => onItemSelected?.call(ctx, idx),
-                child: itemBuilder(ctx, idx),
-              );
-            },
-          ),
+          child: content,
         );
       },
     );
