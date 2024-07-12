@@ -224,12 +224,13 @@ class TitledListView<T> extends StatelessWidget {
             builder: (final context, final value, _) {
               if (value) {
                 return Center(
-                  child: loadingIndicator ?? const SizedBox.square(
-                    dimension: 100,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 8.0,
-                    ),
-                  ),
+                  child: loadingIndicator ??
+                      const SizedBox.square(
+                        dimension: 100,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 8.0,
+                        ),
+                      ),
                 );
               } else {
                 return child;
