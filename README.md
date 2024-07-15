@@ -1,3 +1,3 @@
 # cleanboot
 
-A new Flutter project.
+A bootstrapping framework based on clean architecture for Flutter
