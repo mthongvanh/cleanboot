@@ -59,6 +59,44 @@ class ExpandingDraggableScrollable extends DraggableScrollableSheet {
   @override
   State<ExpandingDraggableScrollable> createState() =>
       _ExpandingDraggableScrollableState();
+
+  /// Present ExpandingDraggableScrollable in a modal widget
+  static Future<T> showModal<T>(
+    final BuildContext context, {
+    required final WidgetBuilder builder,
+    final bool? useRootNavigator,
+    final bool? isScrollControlled,
+    final double? initialChildSize,
+    final double? maxSize,
+    final double? minSize,
+    final bool? snap,
+    final List<double>? snapSizes,
+    final bool? shouldCloseOnMinExtent,
+    final double? borderRadius,
+    final Clip? clipBehavior,
+  }) async {
+    return await showModalBottomSheet(
+      context: context,
+      useRootNavigator: useRootNavigator ?? true,
+      isScrollControlled: isScrollControlled ?? true,
+      builder: (final ctx) => ExpandingDraggableScrollable(
+        snap: snap ?? true,
+        initialChildSize: initialChildSize ?? 1.0,
+        maxChildSize: maxSize ?? 1.0,
+        snapSizes: snapSizes ??
+            const [
+              0.5,
+              0.85,
+            ],
+        shouldCloseOnMinExtent: shouldCloseOnMinExtent ?? false,
+        builder: (final context, final scrollController) => ClipRRect(
+          borderRadius: BorderRadius.circular(borderRadius ?? 32.0),
+          clipBehavior: clipBehavior ?? Clip.hardEdge,
+          child: builder(context),
+        ),
+      ),
+    );
+  }
 }
 
 class _ExpandingDraggableScrollableState
