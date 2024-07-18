@@ -70,11 +70,17 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
     required final String password,
     final String? displayName,
   }) async {
+    late final UserCredential response;
+    response = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: identifier,
+      password: password,
+    );
+
     final user = _firebaseAuth.currentUser;
     // link the anonymous user with a newly-created firebase user
-    final emailCredential =
-        EmailAuthProvider.credential(email: identifier, password: password);
-    final response = await user?.linkWithCredential(emailCredential);
+    if (response.credential != null) {
+      await user?.linkWithCredential(response.credential!);
+    }
 
     // only update the display name if one was supplied or it's different from
     // the current display name
@@ -83,7 +89,7 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
       await updateUserDisplayName(displayName);
     }
 
-    return response!.toModel();
+    return response.toModel();
   }
 
   /// Sign out a user
