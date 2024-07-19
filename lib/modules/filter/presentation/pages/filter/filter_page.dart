@@ -66,6 +66,7 @@ class _FilterPageState extends State<FilterPage> {
                         style: widget.viewModel.filterPageTitleStyle,
                       )
                     : null,
+                centerTitle: true,
                 actions: [
                   IconButton(
                     onPressed: () => widget.controller.clearFilters(),
