@@ -130,7 +130,6 @@ class _SignUpPageState extends State<SignUpPage>
                       : const Text('Submit');
                 },
               ),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
                   unawaited(widget.controller.signUp());
