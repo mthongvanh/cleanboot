@@ -149,24 +149,6 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
     final String updatedName,
   ) async {
     try {
-      final names = await _firestore.collection('displayNames').get();
-      bool unique = true;
-      for (final QueryDocumentSnapshot snapshot in names.docs) {
-        final displayName =
-            (snapshot.data()! as Map<String, dynamic>)['displayName'];
-        if ((snapshot.data()! as Map<String, dynamic>)['displayName'] != null) {
-          unique = displayName?.toString().toLowerCase() !=
-              updatedName.toLowerCase();
-          if (!unique) {
-            break;
-          }
-        }
-      }
-
-      if (!unique) {
-        throw Exception('Display name already exists');
-      }
-
       final user = _firebaseAuth.currentUser;
       await user?.updateDisplayName(updatedName);
       await _firestore.collection('displayNames').add({
