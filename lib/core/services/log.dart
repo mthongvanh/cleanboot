@@ -1,6 +1,6 @@
 import 'dart:async';
 
-/// Log events
+/// Log events to external logging service
 abstract class LoggingService with PerformanceLogger {
   /// Initialize the logging service
   FutureOr<void> init();
@@ -22,15 +22,6 @@ mixin PerformanceLogger {
   /// Stop a trace
   Future<void> stopTrace(final String identifier);
 }
-
-/// Provides an interface to begin and stop performance tracing
-// abstract interface class PerformanceTrace {
-//   /// Begins a trace
-//   Future<void> startTrace();
-//
-//   /// Stops a trace
-//   Future<void> stopTrace();
-// }
 
 /// Log level types
 enum LogLevel {

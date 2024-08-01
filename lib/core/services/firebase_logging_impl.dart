@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../dependency_injection/domain/firebase_options.dart';
 import 'log.dart';
@@ -40,6 +41,14 @@ class FirebaseLoggingImpl extends LoggingService {
         _logError(message, error, stackTrace);
       case LogLevel.fatal:
         _logFatal(message, error, stackTrace);
+    }
+
+    if (kDebugMode) {
+      debugPrint(message);
+      if (error != null) {
+        debugPrint(error.toString());
+        debugPrintStack(stackTrace: stackTrace);
+      }
     }
   }
 
