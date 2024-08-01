@@ -22,6 +22,8 @@ dependencies:
   cloud_firestore: ^4.15.10
   firebase_core: ^2.27.2
   firebase_auth: ^4.18.0
+  firebase_crashlytics: any
+  firebase_performance: any
 
   flutter_animate: ^4.5.0
   flutter_secure_storage: ^9.0.0

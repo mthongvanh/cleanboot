@@ -7,6 +7,10 @@ abstract class AppInitConfig {
   /// the service locator
   bool get firebaseAuthEnabled => false;
 
+  /// Whether the default logging service implementation using firebase should
+  /// be registered with the service locator
+  bool get firebaseLoggingEnabled => false;
+
   /// Whether revenue cat requires initialization
   bool get revenueCatEnabled => false;
 }

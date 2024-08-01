@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as flutter_dotenv;
 
 import '../cleanboot.dart';
+import '../core/services/firebase_logging_impl.dart';
+import '../core/services/log.dart';
 import '../modules/auth/domain/data_sources/auth_remote_data_source.dart';
 import '../modules/auth/domain/use_cases/sign_up_use_case.dart';
 import 'domain/firebase_options.dart';
@@ -33,6 +35,11 @@ class DependencyInjection {
         if (config.firebaseAuthEnabled) {
           await _setupDefaultAuthentication(locators);
         }
+
+        // setup firebase logging
+        if (config.firebaseLoggingEnabled) {
+          await _setupDefaultLogging(locators);
+        }
       }
 
       result = Future.forEach(
@@ -53,6 +60,24 @@ class DependencyInjection {
     await Firebase.initializeApp(
       options: options ?? DefaultFirebaseOptions.currentPlatform,
     );
+  }
+
+  /// Setup default logging that depends on firebase
+  ///
+  /// This function will skip any classes that have already been registered
+  /// with the service locators.
+  static Future<void> _setupDefaultLogging(
+    final List<ServiceLocator> locators,
+  ) async {
+    if (locators
+        .where((final element) => element.isRegistered<LoggingService>())
+        .isEmpty) {
+      final logger = FirebaseLoggingImpl();
+      await logger.init();
+      locators.first.registerSingleton<LoggingService>(
+        logger,
+      );
+    }
   }
 
   /// Setup default authentication flow that depends on firebase
@@ -166,9 +191,8 @@ class DependencyInjection {
 
     if (locators
         .where(
-          (final element) =>
-          element.isRegistered<DeleteUserUseCase>(),
-    )
+          (final element) => element.isRegistered<DeleteUserUseCase>(),
+        )
         .isEmpty) {
       final sl = locators.first;
       sl.registerSingleton<DeleteUserUseCase>(
