@@ -93,8 +93,10 @@ class DependencyInjection {
     if (locators
         .where((final element) => element.isRegistered<AuthRemoteDataSource>())
         .isEmpty) {
+      final authRemote = FirebaseAuthRemoteDataSource()
+        ..subscribeDisplayNames();
       locators.first.registerSingleton<AuthRemoteDataSource>(
-        FirebaseAuthRemoteDataSource(),
+        authRemote,
       );
     }
 
@@ -161,9 +163,13 @@ class DependencyInjection {
         )
         .isEmpty) {
       final sl = locators.first;
-      sl.registerSingleton<GetDisplayNamesUseCase>(
-        GetDisplayNamesUseCase(sl.get<AuthRepository>()),
-      );
+      sl
+        ..registerSingleton<GetDisplayNamesUseCase>(
+          GetDisplayNamesUseCase(sl.get<AuthRepository>()),
+        )
+        ..registerSingleton<GetDisplayNameUseCase>(
+          GetDisplayNameUseCase(sl.get<AuthRepository>()),
+        );
     }
 
     if (locators

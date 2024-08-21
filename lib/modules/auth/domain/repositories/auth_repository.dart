@@ -31,6 +31,12 @@ abstract class AuthRepository {
   /// Update the authenticated user's display/user name
   FutureOr<AuthedUser?> updateUserDisplayName(final String updatedName);
 
+  /// Listen for display/user name changes
+  void subscribeDisplayNames();
+
+  /// Get a display name by the user identifier
+  Map<String, dynamic>? getDisplayName(final String userIdentifier);
+
   /// Sign-out of a service
   Future<void> signOut();
 

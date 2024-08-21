@@ -69,4 +69,14 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> deleteUser() {
     return _remoteDataSource.deleteUser();
   }
+
+  @override
+  void subscribeDisplayNames() {
+    _remoteDataSource.subscribeDisplayNames();
+  }
+
+  @override
+  Map<String, dynamic>? getDisplayName(final String userIdentifier) {
+    return _remoteDataSource.getDisplayName(userIdentifier);
+  }
 }

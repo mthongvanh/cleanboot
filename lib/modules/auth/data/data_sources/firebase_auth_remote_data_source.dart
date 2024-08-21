@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +15,53 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   FirebaseFirestore get _firestore => FirebaseFirestore.instance;
+
+  final _cachedDisplayNames = <String, Map<String, dynamic>>{};
+
+  @override
+  void subscribeDisplayNames() {
+    try {
+      _firestore
+          .collection('displayNames')
+          .snapshots()
+          .listen((final QuerySnapshot<Map<String, dynamic>> onData) {
+        debugPrint(onData.toString());
+        for (final DocumentChange d in onData.docChanges) {
+          final data = d.doc.data() as Map<String, dynamic>? ?? {};
+          switch (d.type) {
+            case DocumentChangeType.added:
+              {
+                final existing = _cachedDisplayNames[data['userUid']];
+                final newer =
+                    (data['createdOn'] as Timestamp).millisecondsSinceEpoch >
+                        ((existing?['createdOn'] as Timestamp?)
+                                ?.millisecondsSinceEpoch ??
+                            0);
+                if (existing == null || newer) {
+                  _cachedDisplayNames[data['userUid']] = data;
+                }
+              }
+            case DocumentChangeType.removed:
+              {
+                _cachedDisplayNames.remove(data['userUid']);
+              }
+            case DocumentChangeType.modified:
+              {
+                debugPrint('display name modified: $data');
+              }
+          }
+        }
+      });
+    } on FirebaseException catch (e) {
+      debugPrint(
+        'Error encountered while listening for display name updates $e',
+      );
+      rethrow;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
 
   @override
   Future<cleanboot.AuthResultModel> authenticate(
@@ -235,6 +283,11 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
       debugPrint(e.toString());
       rethrow;
     }
+  }
+
+  @override
+  Map<String, dynamic>? getDisplayName(final String userIdentifier) {
+    return _cachedDisplayNames[userIdentifier];
   }
 }
 /*

@@ -32,6 +32,12 @@ abstract class AuthRemoteDataSource {
   /// Update the authenticated user's display/user name
   FutureOr<AuthedUserModel?> updateUserDisplayName(final String updatedName);
 
+  /// Get display name data by the user identifier
+  Map<String, dynamic>? getDisplayName(final String userIdentifier);
+
+  /// Listen for display/username changes
+  void subscribeDisplayNames();
+
   /// Sign-out a user
   Future<void> signOut();
 
