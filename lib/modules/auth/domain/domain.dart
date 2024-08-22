@@ -8,6 +8,7 @@ export 'repositories/auth_repository.dart';
 export 'use_cases/assign_random_display_name_use_case.dart';
 export 'use_cases/delete_user_use_case.dart';
 export 'use_cases/display_name_exists_use_case.dart';
+export 'use_cases/get_active_display_names_use_case.dart';
 export 'use_cases/get_authed_user_use_case.dart';
 export 'use_cases/get_display_name_use_case.dart';
 export 'use_cases/get_display_names_use_case.dart';

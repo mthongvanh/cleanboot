@@ -289,6 +289,11 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   Map<String, dynamic>? getDisplayName(final String userIdentifier) {
     return _cachedDisplayNames[userIdentifier];
   }
+
+  @override
+  Map<String, Map<String, dynamic>> getActiveDisplayNames() {
+    return _cachedDisplayNames;
+  }
 }
 /*
 /// Transforms firebase exceptions to Strings

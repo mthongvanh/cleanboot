@@ -25,6 +25,9 @@ abstract class AuthRepository {
   /// Get display names
   Future<List<String>> getDisplayNames(final GetDisplayNamesParams params);
 
+  /// Get active display names
+  Map<String, Map<String, dynamic>> getActiveDisplayNames();
+
   /// Checks whether the display name exists already
   Future<bool> displayNameExists(final DisplayNameExistsParams params);
 

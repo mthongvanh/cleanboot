@@ -23,8 +23,11 @@ abstract class AuthRemoteDataSource {
     final String? displayName,
   });
 
-  /// Gets display names
+  /// Gets all display names created including inactive usernames
   Future<List<String>> getDisplayNames(final GetDisplayNamesParams params);
+
+  /// Get only currently used display names
+  Map<String, Map<String, dynamic>> getActiveDisplayNames();
 
   /// Checks whether the display name exists already
   Future<bool> displayNameExists(final DisplayNameExistsParams params);

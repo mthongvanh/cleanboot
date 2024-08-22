@@ -79,4 +79,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Map<String, dynamic>? getDisplayName(final String userIdentifier) {
     return _remoteDataSource.getDisplayName(userIdentifier);
   }
+
+  @override
+  Map<String, Map<String, dynamic>> getActiveDisplayNames() {
+    return _remoteDataSource.getActiveDisplayNames();
+  }
 }

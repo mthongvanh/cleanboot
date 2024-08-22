@@ -167,6 +167,9 @@ class DependencyInjection {
         ..registerSingleton<GetDisplayNamesUseCase>(
           GetDisplayNamesUseCase(sl.get<AuthRepository>()),
         )
+        ..registerSingleton<GetActiveDisplayNamesUseCase>(
+          GetActiveDisplayNamesUseCase(sl.get<AuthRepository>()),
+        )
         ..registerSingleton<GetDisplayNameUseCase>(
           GetDisplayNameUseCase(sl.get<AuthRepository>()),
         );
