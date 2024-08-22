@@ -31,6 +31,8 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
           switch (d.type) {
             case DocumentChangeType.added:
               {
+                // add a display name if it hasn't been added yet or it is newer
+                // than the user's currently cached display name
                 final existing = _cachedDisplayNames[data['userUid']];
                 final newer =
                     (data['createdOn'] as Timestamp).millisecondsSinceEpoch >
