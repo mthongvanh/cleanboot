@@ -27,4 +27,7 @@ abstract class Controller<T extends Widget> {
 
   /// Notifies widgets that values on the view model have been updated
   void notify() => viewModel.update();
+
+  /// Dispose of resources, such as streams or value notifiers
+  Future<void> dispose() async {}
 }

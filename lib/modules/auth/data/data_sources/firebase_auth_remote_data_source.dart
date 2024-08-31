@@ -34,11 +34,12 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
                 // add a display name if it hasn't been added yet or it is newer
                 // than the user's currently cached display name
                 final existing = _cachedDisplayNames[data['userUid']];
-                final newer =
-                    (data['createdOn'] as Timestamp).millisecondsSinceEpoch >
-                        ((existing?['createdOn'] as Timestamp?)
-                                ?.millisecondsSinceEpoch ??
-                            0);
+                final newer = ((data['createdOn'] as Timestamp?)
+                            ?.millisecondsSinceEpoch ??
+                        0) >
+                    ((existing?['createdOn'] as Timestamp?)
+                            ?.millisecondsSinceEpoch ??
+                        0);
                 if (existing == null || newer) {
                   _cachedDisplayNames[data['userUid']] = data;
                 }
