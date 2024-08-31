@@ -1,4 +1,7 @@
 # Cleanboot Changelog
+### 0.1.7
+- added a dispose() method to the controller framework class
+- fixed issue with display names' createdOn when null
 ### 0.1.6
 - added use case to retrieve list of active display/user names
 ### 0.1.5
