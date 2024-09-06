@@ -1,4 +1,8 @@
 # Cleanboot Changelog
+### 0.1.8
+- added display name module classes
+- moved display name management to display name repo pattern from auth repo
+- added key value store abstract class with default hive implementation
 ### 0.1.7
 - added a dispose() method to the controller framework class
 - fixed issue with display names' createdOn when null
