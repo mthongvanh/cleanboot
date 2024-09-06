@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,56 +14,6 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   FirebaseFirestore get _firestore => FirebaseFirestore.instance;
-
-  final _cachedDisplayNames = <String, Map<String, dynamic>>{};
-
-  @override
-  void subscribeDisplayNames() {
-    try {
-      _firestore
-          .collection('displayNames')
-          .snapshots()
-          .listen((final QuerySnapshot<Map<String, dynamic>> onData) {
-        debugPrint(onData.toString());
-        for (final DocumentChange d in onData.docChanges) {
-          final data = d.doc.data() as Map<String, dynamic>? ?? {};
-          switch (d.type) {
-            case DocumentChangeType.added:
-              {
-                // add a display name if it hasn't been added yet or it is newer
-                // than the user's currently cached display name
-                final existing = _cachedDisplayNames[data['userUid']];
-                final newer = ((data['createdOn'] as Timestamp?)
-                            ?.millisecondsSinceEpoch ??
-                        0) >
-                    ((existing?['createdOn'] as Timestamp?)
-                            ?.millisecondsSinceEpoch ??
-                        0);
-                if (existing == null || newer) {
-                  _cachedDisplayNames[data['userUid']] = data;
-                }
-              }
-            case DocumentChangeType.removed:
-              {
-                _cachedDisplayNames.remove(data['userUid']);
-              }
-            case DocumentChangeType.modified:
-              {
-                debugPrint('display name modified: $data');
-              }
-          }
-        }
-      });
-    } on FirebaseException catch (e) {
-      debugPrint(
-        'Error encountered while listening for display name updates $e',
-      );
-      rethrow;
-    } catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
 
   @override
   Future<cleanboot.AuthResultModel> authenticate(
@@ -219,64 +168,6 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
   }
 
   @override
-  Future<List<String>> getDisplayNames(
-    final cleanboot.GetDisplayNamesParams params,
-  ) async {
-    try {
-      final source = Source.values.firstWhere(
-        (final element) =>
-            element.name.toLowerCase() == params.cacheType?.toLowerCase(),
-        orElse: () => Source.serverAndCache,
-      );
-
-      final options = GetOptions(
-        source: source,
-      );
-
-      final snapshot = await _firestore.collection('displayNames').get(options);
-      final names = snapshot.docs.map((final e) {
-        return e.get('displayName') as String;
-      }).toList();
-      return names;
-    } on FirebaseAuthException catch (e) {
-      throw Exception(_handleAuthError(e));
-    } catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<bool> displayNameExists(
-      final cleanboot.DisplayNameExistsParams params) async {
-    final source = Source.values.firstWhere(
-      (final element) =>
-          element.name.toLowerCase() == params.cacheType?.toLowerCase(),
-      orElse: () => Source.serverAndCache,
-    );
-
-    final options = GetOptions(
-      source: source,
-    );
-
-    final names = await _firestore.collection('displayNames').get(options);
-    bool unique = true;
-    for (final QueryDocumentSnapshot snapshot in names.docs) {
-      final displayName =
-          (snapshot.data()! as Map<String, dynamic>)['displayName'];
-      if (displayName != null) {
-        unique = displayName?.toString().toLowerCase() !=
-            params.displayName.toLowerCase();
-        if (!unique) {
-          break;
-        }
-      }
-    }
-
-    return unique;
-  }
-
-  @override
   Future<void> deleteUser() async {
     try {
       await _firebaseAuth.currentUser?.delete();
@@ -286,16 +177,6 @@ class FirebaseAuthRemoteDataSource extends AuthRemoteDataSource {
       debugPrint(e.toString());
       rethrow;
     }
-  }
-
-  @override
-  Map<String, dynamic>? getDisplayName(final String userIdentifier) {
-    return _cachedDisplayNames[userIdentifier];
-  }
-
-  @override
-  Map<String, Map<String, dynamic>> getActiveDisplayNames() {
-    return _cachedDisplayNames;
   }
 }
 /*

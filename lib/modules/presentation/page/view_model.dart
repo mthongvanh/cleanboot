@@ -14,4 +14,11 @@ abstract class ViewModel<T> extends ChangeNotifier {
 
   /// Notifies listeners that the view model has changed
   void update() => notifyListeners();
+
+  @override
+  void dispose() {
+    error.dispose();
+    loading.dispose();
+    super.dispose();
+  }
 }

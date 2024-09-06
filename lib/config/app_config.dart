@@ -13,4 +13,7 @@ abstract class AppInitConfig {
 
   /// Whether revenue cat requires initialization
   bool get revenueCatEnabled => false;
+
+  /// Store name for display names
+  static const displayNameStore = 'displayNameStore';
 }

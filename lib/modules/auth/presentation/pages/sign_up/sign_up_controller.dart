@@ -59,7 +59,9 @@ class SignUpPageController extends Controller<SignUpPage> {
       ),
     );
     if (response.result != null) {
-      viewModel.displayNames.addAll(response.result!);
+      viewModel.displayNames.addAll(
+        response.result!.map((final e) => e.displayName).toList(),
+      );
     } else {
       _onError(response.failure);
     }

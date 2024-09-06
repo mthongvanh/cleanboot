@@ -7,20 +7,20 @@ import '../../../../cleanboot.dart';
 /// {@template GetDisplayNameUseCase}
 /// Get a display name by the user identifier
 /// {@endtemplate}
-class GetDisplayNameUseCase extends UseCase<Map<String, dynamic>?, String> {
-  final AuthRepository _authRepository;
+class GetDisplayNameUseCase extends UseCase<DisplayName?, String> {
+  final DisplayNamesRepository _displayNamesRepository;
 
   /// {@macro GetDisplayNameUseCase}
-  GetDisplayNameUseCase(this._authRepository);
+  GetDisplayNameUseCase(this._displayNamesRepository);
 
   @override
-  Future<({Failure? failure, Map<String, dynamic>? result})> execute(
+  Future<({Failure? failure, DisplayName? result})> execute(
     final String params,
   ) async {
     Failure? failure;
-    Map<String, dynamic>? result;
+    DisplayName? result;
     try {
-      final response = _authRepository.getDisplayName(params);
+      final response = await _displayNamesRepository.getDisplayName(params);
       result = response;
     } catch (e) {
       debugPrint(e.toString());

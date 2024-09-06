@@ -7,20 +7,20 @@ import '../../../../cleanboot.dart';
 /// {@template GetDisplayNamesUseCase}
 /// Gets existing display names from a service
 /// {@endtemplate}
-class GetDisplayNamesUseCase extends UseCase<List<String>, GetDisplayNamesParams> {
-  final AuthRepository _authRepository;
+class GetDisplayNamesUseCase extends UseCase<List<DisplayName>, GetDisplayNamesParams> {
+  final DisplayNamesRepository _displayNamesRepository;
 
   /// {@macro GetDisplayNamesUseCase}
-  GetDisplayNamesUseCase(this._authRepository);
+  GetDisplayNamesUseCase(this._displayNamesRepository);
 
   @override
-  Future<({Failure? failure, List<String>? result})> execute(
+  Future<({Failure? failure, List<DisplayName>? result})> execute(
     final GetDisplayNamesParams params,
   ) async {
     Failure? failure;
-    List<String>? result;
+    List<DisplayName>? result;
     try {
-      final response = await _authRepository.getDisplayNames(params);
+      final response = await _displayNamesRepository.getDisplayNames(params);
       result = response;
     } catch (e) {
       debugPrint(e.toString());

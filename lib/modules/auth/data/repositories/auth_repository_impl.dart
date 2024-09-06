@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import '../../../../cleanboot.dart';
-import '../../auth.dart';
 import '../../domain/data_sources/auth_remote_data_source.dart';
 import '../../domain/params/sign_up_params.dart';
 import '../../mappers/mappers.dart';
@@ -13,7 +12,9 @@ class AuthRepositoryImpl extends AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;
 
   /// {@macro AuthRepositoryImpl}
-  AuthRepositoryImpl(this._remoteDataSource);
+  AuthRepositoryImpl(
+    this._remoteDataSource,
+  );
 
   @override
   Future<AuthResultModel> authenticate(final AuthParams authParameters) {
@@ -48,16 +49,6 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<List<String>> getDisplayNames(final GetDisplayNamesParams params) {
-    return _remoteDataSource.getDisplayNames(params);
-  }
-
-  @override
-  Future<bool> displayNameExists(final DisplayNameExistsParams params) {
-    return _remoteDataSource.displayNameExists(params);
-  }
-
-  @override
   Stream<AuthedUser?> streamCurrentUser() {
     return _remoteDataSource
         .streamCurrentUser()
@@ -68,20 +59,5 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<void> deleteUser() {
     return _remoteDataSource.deleteUser();
-  }
-
-  @override
-  void subscribeDisplayNames() {
-    _remoteDataSource.subscribeDisplayNames();
-  }
-
-  @override
-  Map<String, dynamic>? getDisplayName(final String userIdentifier) {
-    return _remoteDataSource.getDisplayName(userIdentifier);
-  }
-
-  @override
-  Map<String, Map<String, dynamic>> getActiveDisplayNames() {
-    return _remoteDataSource.getActiveDisplayNames();
   }
 }

@@ -93,8 +93,7 @@ class DependencyInjection {
     if (locators
         .where((final element) => element.isRegistered<AuthRemoteDataSource>())
         .isEmpty) {
-      final authRemote = FirebaseAuthRemoteDataSource()
-        ..subscribeDisplayNames();
+      final authRemote = FirebaseAuthRemoteDataSource();
       locators.first.registerSingleton<AuthRemoteDataSource>(
         authRemote,
       );
@@ -105,8 +104,35 @@ class DependencyInjection {
         .where((final element) => element.isRegistered<AuthRepository>())
         .isEmpty) {
       final sl = locators.first;
+
+      // register a default display name local data store
+      if (!sl.isRegistered<DisplayNamesLocalDataSource>()) {
+        // use hive as the default kv store if one is not registered
+        if (!sl.isRegistered<KeyValueStore>(
+          identifier: AppInitConfig.displayNameStore,
+        )) {
+          final store = HiveKeyValueStore(AppInitConfig.displayNameStore);
+          await store.init();
+
+          sl.registerSingleton<KeyValueStore>(
+            store,
+            identifier: AppInitConfig.displayNameStore,
+          );
+        }
+
+        sl.registerFactory<DisplayNamesLocalDataSource>(
+          () => DisplayNamesLocalDataSourceImpl(
+            sl.get<KeyValueStore>(
+              identifier: AppInitConfig.displayNameStore,
+            ),
+          ),
+        );
+      }
+
       sl.registerSingleton<AuthRepository>(
-        AuthRepositoryImpl(sl.get<AuthRemoteDataSource>()),
+        AuthRepositoryImpl(
+          sl.get<AuthRemoteDataSource>(),
+        ),
       );
     }
 
@@ -157,23 +183,29 @@ class DependencyInjection {
       );
     }
 
-    if (locators
-        .where(
-          (final element) => element.isRegistered<GetDisplayNamesUseCase>(),
-        )
-        .isEmpty) {
-      final sl = locators.first;
-      sl
-        ..registerSingleton<GetDisplayNamesUseCase>(
-          GetDisplayNamesUseCase(sl.get<AuthRepository>()),
-        )
-        ..registerSingleton<GetActiveDisplayNamesUseCase>(
-          GetActiveDisplayNamesUseCase(sl.get<AuthRepository>()),
-        )
-        ..registerSingleton<GetDisplayNameUseCase>(
-          GetDisplayNameUseCase(sl.get<AuthRepository>()),
-        );
-    }
+    _registerUseCase<GetDisplayNamesUseCase>(
+      locators,
+      builder: (final sl) =>
+          GetDisplayNamesUseCase(sl.get<DisplayNamesRepository>()),
+    );
+
+    _registerUseCase<GetActiveDisplayNamesUseCase>(
+      locators,
+      builder: (final sl) =>
+          GetActiveDisplayNamesUseCase(sl.get<DisplayNamesRepository>()),
+    );
+
+    _registerUseCase<GetDisplayNameUseCase>(
+      locators,
+      builder: (final sl) =>
+          GetDisplayNameUseCase(sl.get<DisplayNamesRepository>()),
+    );
+
+    _registerUseCase<DisplayNameExistsUseCase>(
+      locators,
+      builder: (final sl) =>
+          DisplayNameExistsUseCase(sl.get<GetDisplayNamesUseCase>()),
+    );
 
     if (locators
         .where(
@@ -189,17 +221,6 @@ class DependencyInjection {
 
     if (locators
         .where(
-          (final element) => element.isRegistered<DisplayNameExistsUseCase>(),
-        )
-        .isEmpty) {
-      final sl = locators.first;
-      sl.registerSingleton<DisplayNameExistsUseCase>(
-        DisplayNameExistsUseCase(sl.get<GetDisplayNamesUseCase>()),
-      );
-    }
-
-    if (locators
-        .where(
           (final element) => element.isRegistered<DeleteUserUseCase>(),
         )
         .isEmpty) {
@@ -207,6 +228,21 @@ class DependencyInjection {
       sl.registerSingleton<DeleteUserUseCase>(
         DeleteUserUseCase(sl.get<AuthRepository>()),
       );
+    }
+  }
+
+  /// Registers a use case for a type if it has not already been registered
+  static void _registerUseCase<U extends Object>(
+    final List<ServiceLocator> locators, {
+    required final U Function(ServiceLocator sl) builder,
+  }) {
+    if (locators
+        .where(
+          (final element) => element.isRegistered<U>(),
+        )
+        .isEmpty) {
+      final sl = locators.first;
+      sl.registerLazySingleton<U>(() => builder(sl));
     }
   }
 }
