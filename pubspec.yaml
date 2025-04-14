@@ -1,7 +1,7 @@
 name: cleanboot
 description: "Clean architecture bootstrap framework for Flutter"
 publish_to: 'none'
-version: 0.1.8
+version: 0.1.9
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -19,11 +19,11 @@ dependencies:
 
   equatable: ^2.0.5
 
-  cloud_firestore: ^4.15.10
-  firebase_core: ^2.27.2
-  firebase_auth: ^4.18.0
+  cloud_firestore: any
+  firebase_core: ^3.13.0
+  firebase_auth: any
   firebase_crashlytics: any
-  firebase_performance: ^0.9.4+7
+  firebase_performance: any
 
   flutter_animate: ^4.5.0
   flutter_secure_storage: ^9.0.0
