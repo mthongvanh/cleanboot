@@ -1,3 +1,4 @@
+synthetic-package: false
 arb-dir: lib/modules/l10n/data/arb
 template-arb-file: base_en.arb
 output-localization-file: base_localizations.dart

@@ -1,17 +1,11 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl_standalone.dart';
-
 /// Loads and stores localized strings
-abstract class LocaleRepository {
+abstract class LocaleRepository<T> {
   final Locale _defaultLocale = const Locale('en');
 
-  AppLocalizations? _strings;
-
   /// Collection of localized strings
-  AppLocalizations get strings;
+  T get strings;
 
   /// Whether localizations have been loaded
   bool get isLoaded;
